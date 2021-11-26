@@ -20,42 +20,42 @@ const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
-    path: '/',
-    element: <MainLayout />,
-    children: [
-        {
-            path: '/',
-            element: <DashboardDefault />
-        },
-        {
-            path: '/dashboard/default',
-            element: <DashboardDefault />
-        },
-        {
-            path: '/utils/util-typography',
-            element: <UtilsTypography />
-        },
-        {
-            path: '/utils/util-color',
-            element: <UtilsColor />
-        },
-        {
-            path: '/utils/util-shadow',
-            element: <UtilsShadow />
-        },
-        {
-            path: '/icons/tabler-icons',
-            element: <UtilsTablerIcons />
-        },
-        {
-            path: '/icons/material-icons',
-            element: <UtilsMaterialIcons />
-        },
-        {
-            path: '/sample-page',
-            element: <SamplePage />
-        }
-    ]
+  path: '/',
+  element: <MainLayout />,
+  children: [
+    {
+      path: '/',
+      element: <DashboardDefault />
+    },
+    {
+      path: '/dashboard/default',
+      element: <DashboardDefault />
+    },
+    {
+      path: '/utils/util-typography',
+      element: <UtilsTypography />
+    },
+    {
+      path: '/utils/util-color',
+      element: <UtilsColor />
+    },
+    {
+      path: '/utils/util-shadow',
+      element: <UtilsShadow />
+    },
+    {
+      path: '/icons/tabler-icons',
+      element: <UtilsTablerIcons />
+    },
+    {
+      path: '/icons/material-icons',
+      element: <UtilsMaterialIcons />
+    },
+    {
+      path: '/sample-page',
+      element: <SamplePage />
+    }
+  ]
 };
 
 export default MainRoutes;
