@@ -12,6 +12,13 @@ import themes from 'themes';
 // project imports
 import NavigationScroll from 'layout/NavigationScroll';
 
+// run interceptors and services
+import AuthService from 'services/auth.service';
+import setupAxiosInterceptors from 'apis/_axios/interceptors';
+
+setupAxiosInterceptors();
+AuthService.init();
+
 // ==============================|| APP ||============================== //
 
 const App = () => {

@@ -12,12 +12,17 @@ import { store } from 'store';
 // style + assets
 import 'assets/scss/style.scss';
 
+// react toastify
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // ==============================|| REACT DOM RENDER  ||============================== //
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <App />
+      <ToastContainer />
     </BrowserRouter>
   </Provider>,
   document.getElementById('root')
