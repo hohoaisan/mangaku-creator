@@ -12,6 +12,7 @@ const initialState = {
   //   name: '',
   //   email: '',
   //   role: '', // user | author | moderator | admin
+  //   permisisons: []
   //   emailVerified: false
   // }
 };
