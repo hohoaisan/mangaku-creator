@@ -4,7 +4,6 @@
 /* eslint-disable import/prefer-default-export */
 import AxiosClient from './axios';
 import TokenService from 'services/token.service';
-import ToastService from 'services/toast.service';
 import AuthService from 'services/auth.service';
 
 import { LOGIN, TOKEN_REFRESH } from 'apis/_endpoints';
@@ -49,8 +48,7 @@ const setupAxiosInterceptors = () => {
       }
 
       if (refreshToken && originalConfig.url !== LOGIN && err?.response?.status === httpStatus.UNAUTHORIZED && originalConfig._retry) {
-        ToastService.error('TOKEN EXPIRED');
-        AuthService.logout();
+        AuthService.logout({ tokenExpired: true });
       }
 
       return Promise.reject(err);
