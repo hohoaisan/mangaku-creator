@@ -8,7 +8,8 @@ class AuthService {
     const accessToken = TokenService.getAccessToken();
     const refreshToken = TokenService.getRefreshToken();
     if (accessToken && refreshToken) {
-      await store.dispatch(AuthSlice.getProfile({ accessToken }));
+      console.log('auth init');
+      await store.dispatch(AuthSlice.getProfile());
       return;
     }
     TokenService.clearTokens();
@@ -38,7 +39,7 @@ class AuthService {
       .finally(() => {
         TokenService.clearTokens();
         if (tokenExpired) {
-          ToastService.success('Token expired');
+          return ToastService.success('Token expired, Logged out');
         }
         return ToastService.success('Logged out');
       });
