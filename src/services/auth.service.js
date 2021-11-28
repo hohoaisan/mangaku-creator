@@ -8,10 +8,10 @@ class AuthService {
     const accessToken = TokenService.getAccessToken();
     const refreshToken = TokenService.getRefreshToken();
     if (accessToken && refreshToken) {
-      console.log('auth init');
-      await store.dispatch(AuthSlice.getProfile());
+      await store.dispatch(AuthSlice.initProfile());
       return;
     }
+    store.dispatch(AuthSlice.init());
     TokenService.clearTokens();
   }
 

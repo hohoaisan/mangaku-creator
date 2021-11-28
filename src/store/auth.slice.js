@@ -4,7 +4,7 @@ import * as authAPI from 'apis/auth';
 import * as profileAPI from 'apis/profile';
 
 const initialState = {
-  status: 'idle', // idle | loading
+  isLoading: true, // idle | loading
   isLoggedIn: false,
   user: null
   // user : {
@@ -19,46 +19,52 @@ const initialState = {
 
 export const login = createAsyncThunk('auth/login', async (credentials) => authAPI.login(credentials));
 export const logout = createAsyncThunk('auth/logout', async ({ refreshToken }) => authAPI.logout({ refreshToken }));
-export const getProfile = createAsyncThunk('auth/getProfile', async () => profileAPI.getProfile());
+export const initProfile = createAsyncThunk('auth/getProfile', async () => profileAPI.getProfile());
 
-export const counterSlice = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    init: (state) => {
+      state.isLoading = false;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(login.pending, (state) => {
-        state.status = 'loading';
+        state.isLoading = true;
       })
       .addCase(login.fulfilled, (state, action) => {
-        state.status = 'idle';
+        state.isLoading = false;
         state.isLoggedIn = true;
         state.user = action.payload?.user;
       })
       .addCase(login.rejected, (state) => {
-        state.status = 'idle';
+        state.isLoading = false;
         state.isLoggedIn = false;
         state.user = null;
       })
       .addCase(logout.fulfilled, (state) => {
-        state.status = 'idle';
+        state.isLoading = false;
         state.isLoggedIn = false;
         state.user = null;
       })
       .addCase(logout.rejected, (state) => {
-        state.status = 'idle';
+        state.isLoading = false;
         state.isLoggedIn = false;
         state.user = null;
       })
-      .addCase(getProfile.pending, (state, action) => {
-        console.log('geting profile... ');
+      .addCase(initProfile.pending, (state) => {
+        state.isLoading = true;
       })
-      .addCase(getProfile.fulfilled, (state, action) => {
-        state.status = 'idle';
+      .addCase(initProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.isLoggedIn = true;
         state.user = action.payload;
       });
   }
 });
 
-export default counterSlice.reducer;
+export const { init } = authSlice.actions;
+
+export default authSlice.reducer;
