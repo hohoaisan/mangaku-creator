@@ -1,10 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-import * as authAPI from 'apis/auth';
 import * as profileAPI from 'apis/profile';
 
 const initialState = {
-  isLoading: true, // idle | loading
+  isLoading: true,
   isLoggedIn: false,
   user: null
   // user : {
@@ -17,8 +16,6 @@ const initialState = {
   // }
 };
 
-export const login = createAsyncThunk('auth/login', async (credentials) => authAPI.login(credentials));
-export const logout = createAsyncThunk('auth/logout', async ({ refreshToken }) => authAPI.logout({ refreshToken }));
 export const initProfile = createAsyncThunk('auth/getProfile', async () => profileAPI.getProfile());
 
 export const authSlice = createSlice({
@@ -27,33 +24,30 @@ export const authSlice = createSlice({
   reducers: {
     init: (state) => {
       state.isLoading = false;
+    },
+    loginPending: (state) => {
+      state.isLoading = true;
+      state.isLoggedIn = false;
+      state.user = null;
+    },
+    loginSuccess: (state, action) => {
+      state.isLoading = false;
+      state.isLoggedIn = true;
+      state.user = action.payload;
+    },
+    loginFailed: (state) => {
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.user = null;
+    },
+    logout: (state) => {
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.user = null;
     }
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isLoggedIn = true;
-        state.user = action.payload?.user;
-      })
-      .addCase(login.rejected, (state) => {
-        state.isLoading = false;
-        state.isLoggedIn = false;
-        state.user = null;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isLoggedIn = false;
-        state.user = null;
-      })
-      .addCase(logout.rejected, (state) => {
-        state.isLoading = false;
-        state.isLoggedIn = false;
-        state.user = null;
-      })
       .addCase(initProfile.pending, (state) => {
         state.isLoading = true;
       })
@@ -65,6 +59,6 @@ export const authSlice = createSlice({
   }
 });
 
-export const { init } = authSlice.actions;
+export const { init, loginPending, loginSuccess, loginFailed, logout } = authSlice.actions;
 
 export default authSlice.reducer;
