@@ -5,9 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
-  FormControlLabel,
   FormHelperText,
   Grid,
   IconButton,
@@ -30,12 +28,24 @@ import AnimateButton from 'ui-component/extended/AnimateButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+// services
+import AuthService from 'services/auth.service';
+
 // ============================|| FIREBASE - LOGIN ||============================ //
+
+const loginInitValue = {
+  email: '',
+  password: ''
+};
+
+const loginValidationSchema = Yup.object().shape({
+  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
+  password: Yup.string().max(255).required('Password is required')
+});
 
 const FirebaseLogin = ({ ...others }) => {
   const theme = useTheme();
   const scriptedRef = useScriptRef();
-  const [checked, setChecked] = useState(true);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -57,23 +67,17 @@ const FirebaseLogin = ({ ...others }) => {
       </Grid>
 
       <Formik
-        initialValues={{
-          email: 'info@codedthemes.com',
-          password: '123456',
-          submit: null
-        }}
-        validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
-        })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+        initialValues={loginInitValue}
+        validationSchema={loginValidationSchema}
+        onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
           try {
             if (scriptedRef.current) {
+              await AuthService.login(values);
               setStatus({ success: true });
               setSubmitting(false);
+              resetForm();
             }
           } catch (err) {
-            console.error(err);
             if (scriptedRef.current) {
               setStatus({ success: false });
               setErrors({ submit: err.message });
@@ -135,12 +139,7 @@ const FirebaseLogin = ({ ...others }) => {
               )}
             </FormControl>
             <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={1}>
-              <FormControlLabel
-                control={
-                  <Checkbox checked={checked} onChange={(event) => setChecked(event.target.checked)} name="checked" color="primary" />
-                }
-                label="Remember me"
-              />
+              <div />
               <Typography variant="subtitle1" color="secondary" sx={{ textDecoration: 'none', cursor: 'pointer' }}>
                 Forgot Password?
               </Typography>
