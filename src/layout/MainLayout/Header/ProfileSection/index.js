@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -26,9 +26,15 @@ import {
 import MainCard from 'ui-component/cards/MainCard';
 import Transitions from 'ui-component/extended/Transitions';
 import User1 from 'assets/images/users/user-round.svg';
+import useAuth from 'hooks/useAuth';
+import AuthService from 'services/auth.service';
 
 // assets
 import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+
+// config
+
+import { roleNames } from 'configs/roles';
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -36,7 +42,14 @@ const ProfileSection = () => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const navigate = useNavigate();
-
+  const auth = useAuth();
+  const info = useMemo(
+    () => ({
+      name: auth.user?.name || '',
+      role: roleNames[auth.user.role] || 'Unknown'
+    }),
+    [auth]
+  );
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   /**
@@ -44,7 +57,7 @@ const ProfileSection = () => {
    * */
   const anchorRef = useRef(null);
   const handleLogout = async () => {
-    console.log('Logout');
+    await AuthService.logout();
   };
 
   const handleClose = (event) => {
@@ -145,12 +158,11 @@ const ProfileSection = () => {
                   <Box sx={{ p: 2 }}>
                     <Stack>
                       <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography variant="h4">Good Morning,</Typography>
                         <Typography component="span" variant="h4" sx={{ fontWeight: 400 }}>
-                          Johne Doe
+                          {info.name}
                         </Typography>
                       </Stack>
-                      <Typography variant="subtitle2">Project Admin</Typography>
+                      <Typography variant="subtitle2">{info.role}</Typography>
                     </Stack>
                   </Box>
                   <Divider />
