@@ -13,7 +13,9 @@ const setupAxiosInterceptors = () => {
   AxiosClient.interceptors.request.use(
     (config) => {
       const token = TokenService.getAccessToken();
-      config.headers.Authorization = token ? `Bearer ${token}` : '';
+      if (token) {
+        config.headers.Authorization = token ? `Bearer ${token}` : '';
+      }
       return config;
     },
     (error) => Promise.reject(error)
