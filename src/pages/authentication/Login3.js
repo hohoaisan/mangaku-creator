@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -10,6 +10,7 @@ import AuthCardWrapper from './wrappers/AuthCardWrapper';
 import AuthLogin from './auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
+import useAuth from 'hooks/useAuth';
 
 // assets
 
@@ -18,7 +19,10 @@ import AuthFooter from 'ui-component/cards/AuthFooter';
 const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-
+  const auth = useAuth();
+  if (auth.isLoggedIn) {
+    return <Navigate to="/" />;
+  }
   return (
     <AuthWrapper1>
       <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
