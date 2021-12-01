@@ -3,6 +3,7 @@ import { lazy } from 'react';
 // project imports
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
+import withProtectedRoute from './wrappers/withProtectedRoute';
 
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/Default')));
@@ -18,10 +19,11 @@ const UtilsTablerIcons = Loadable(lazy(() => import('pages/utilities/TablerIcons
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
 // ==============================|| MAIN ROUTING ||============================== //
+const MainLayoutProtected = withProtectedRoute(MainLayout);
 
 const MainRoutes = {
   path: '/',
-  element: <MainLayout />,
+  element: <MainLayoutProtected />,
   children: [
     {
       path: '/',
