@@ -15,6 +15,15 @@ const UtilsShadow = Loadable(lazy(() => import('pages/utilities/Shadow')));
 const UtilsMaterialIcons = Loadable(lazy(() => import('pages/utilities/MaterialIcons')));
 const UtilsTablerIcons = Loadable(lazy(() => import('pages/utilities/TablerIcons')));
 
+// manage people routing
+const ManageUsers = Loadable(lazy(() => import('pages/manage-people/Users')));
+
+// manage comics and related routing
+const ManageComics = Loadable(lazy(() => import('pages/manage-comics/Comics')));
+const ManageAuthors = Loadable(lazy(() => import('pages/manage-comics/Authors')));
+const ManageGenres = Loadable(lazy(() => import('pages/manage-comics/Genres')));
+const ManageTypes = Loadable(lazy(() => import('pages/manage-comics/Types')));
+
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
 
@@ -56,6 +65,26 @@ const MainRoutes = {
     {
       path: '/sample-page',
       element: <SamplePage />
+    },
+    {
+      path: '/users',
+      element: <ManageUsers />
+    },
+    {
+      path: '/comics',
+      element: <ManageComics />
+    },
+    {
+      path: '/authors',
+      element: <ManageAuthors />
+    },
+    {
+      path: '/genres',
+      element: <ManageGenres />
+    },
+    {
+      path: '/types',
+      element: <ManageTypes />
     }
   ]
 };
