@@ -33,11 +33,11 @@ const pages = {
       breadcrumbs: false
     },
     {
-      id: 'comic_type',
-      title: 'Types',
+      id: 'comic_format',
+      title: 'Formats',
       type: 'item',
       icon: icons.IconNote,
-      url: '/types',
+      url: '/formats',
       breadcrumbs: false
     },
     {
