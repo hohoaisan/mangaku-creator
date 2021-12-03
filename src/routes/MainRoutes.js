@@ -22,7 +22,7 @@ const ManageUsers = Loadable(lazy(() => import('pages/manage-people/Users')));
 const ManageComics = Loadable(lazy(() => import('pages/manage-comics/Comics')));
 const ManageAuthors = Loadable(lazy(() => import('pages/manage-comics/Authors')));
 const ManageGenres = Loadable(lazy(() => import('pages/manage-comics/Genres')));
-const ManageTypes = Loadable(lazy(() => import('pages/manage-comics/Types')));
+const ManageFormats = Loadable(lazy(() => import('pages/manage-comics/Formats')));
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('pages/sample-page')));
@@ -83,8 +83,8 @@ const MainRoutes = {
       element: <ManageGenres />
     },
     {
-      path: '/types',
-      element: <ManageTypes />
+      path: '/formats',
+      element: <ManageFormats />
     }
   ]
 };
