@@ -1,4 +1,5 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import { styled, alpha } from '@mui/material/styles';
 import { InputBase, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -47,7 +48,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   }
 }));
 
-const Search = ({ onSubmit, ...props }) => {
+const Search = ({ initialValue, onSubmit, ...props }) => {
   const [isSubmit, setIsSubmit] = React.useState(false);
   const inputRef = React.useRef(null);
   const onFormSubmit = (event) => {
@@ -58,9 +59,16 @@ const Search = ({ onSubmit, ...props }) => {
     }
   };
   const onClose = () => {
+    inputRef.current.value = '';
     setIsSubmit(false);
     onSubmit(null);
   };
+  React.useEffect(() => {
+    if (initialValue) {
+      inputRef.current.value = initialValue;
+      setIsSubmit(true);
+    }
+  }, []);
   return (
     <Wrapper>
       <form onSubmit={onFormSubmit}>
@@ -73,6 +81,15 @@ const Search = ({ onSubmit, ...props }) => {
       </StyledIconWrapper>
     </Wrapper>
   );
+};
+
+Search.propTypes = {
+  initialValue: PropTypes.string,
+  onSubmit: PropTypes.func
+};
+
+Search.defaultProps = {
+  initialValue: null
 };
 
 export default Search;
