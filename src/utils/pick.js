@@ -4,9 +4,21 @@
  * @param {string[]} keys
  * @returns {Object}
  */
-const pick = (object, keys) =>
+
+const defaultOptions = { allowNull: true, allowEmptyString: true };
+const pick = (object, keys, options = {}) =>
   keys.reduce((obj, key) => {
-    if (object && Object.prototype.hasOwnProperty.call(object, key)) {
+    const { allowNull, allowEmptyString } = Object.assign(defaultOptions, options);
+
+    if (!allowNull && object[key] === null) {
+      return obj;
+    }
+
+    if (!allowEmptyString && typeof object[key] === 'string' && object[key].length === 0) {
+      return obj;
+    }
+
+    if (object && key in object) {
       // eslint-disable-next-line no-param-reassign
       obj[key] = object[key];
     }
