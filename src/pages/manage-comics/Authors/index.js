@@ -64,10 +64,6 @@ const ManageAuthors = () => {
     delete: false
   });
 
-  useEffect(() => {
-    queryClient.invalidateQueries(AUTHORS);
-  }, [currentTab]);
-
   const handleOpenModal = (modal) => {
     setOpenModal({
       ...openModal,
