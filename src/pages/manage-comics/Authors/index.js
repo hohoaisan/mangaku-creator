@@ -123,7 +123,9 @@ const ManageAuthors = () => {
   const handleTabChange = (event, newTabIndex) => {
     setCurrentTab(newTabIndex);
     setQueries({
-      scope: scopes[newTabIndex].key
+      ...queries,
+      scope: scopes[newTabIndex].key,
+      page: 1
     });
   };
 
@@ -137,6 +139,7 @@ const ManageAuthors = () => {
 
   const handleSearchSubmit = (value) =>
     setQueries({
+      ...queries,
       page: 1,
       search: value
     });
