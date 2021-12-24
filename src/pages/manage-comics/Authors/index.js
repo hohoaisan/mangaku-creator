@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 // material-ui
 import { Button, IconButton, Box, Tabs, Tab } from '@mui/material';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
@@ -13,7 +13,6 @@ import CreateAuthor from './CreateAuthor';
 import RestoreAuthor from './RestoreAuthor';
 
 // react query
-import queryClient from 'query';
 import { useQuery } from 'react-query';
 import { AUTHORS } from 'query/queryKeys';
 import { getAllAuthors } from 'apis/author';

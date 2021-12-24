@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback } from 'react';
 // material-ui
-import { IconButton, Box, Tabs, Tab } from '@mui/material';
+import { IconButton, Box, Tabs, Tab, Stack } from '@mui/material';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { Refresh as RefreshIcon, Delete as DeleteIcon, Edit as EditIcon, Restore as RestoreFromTrashIcon } from '@mui/icons-material';
 
@@ -210,7 +210,7 @@ const ManageChapters = () => {
   }
   return (
     <Box mb={2}>
-      <Box mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" marginBottom={2}>
         <Tabs value={currentTab} onChange={handleTabChange}>
           {scopes.map(({ label, key }) => (
             <Tab key={key} label={label} />
@@ -219,7 +219,7 @@ const ManageChapters = () => {
         <IconButton onClick={handleRefreshClick}>
           <RefreshIcon />
         </IconButton>
-      </Box>
+      </Stack>
       <Box height={600} width="100%">
         <DataGrid
           columns={columnsWithActions}
