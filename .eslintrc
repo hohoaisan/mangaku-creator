@@ -4,11 +4,21 @@
         "browser": true,
         "es2021": true
     },
-    "extends": ["airbnb", "prettier", "plugin:react/jsx-runtime", "plugin:jsx-a11y/recommended", "plugin:react-hooks/recommended"],
+    "extends": [
+        "airbnb",
+        "prettier",
+        "plugin:react/jsx-runtime",
+        "plugin:jsx-a11y/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:react/recommended"
+    ],
     "settings": {
         "import/resolver": {
             "node": {
-                "moduleDirectory": ["node_modules", "src/"]
+                "moduleDirectory": [
+                    "node_modules",
+                    "src/"
+                ]
             }
         }
     },
@@ -20,7 +30,11 @@
         },
         "ecmaVersion": 12
     },
-    "plugins": ["prettier", "react", "react-hooks"],
+    "plugins": [
+        "prettier",
+        "react",
+        "react-hooks"
+    ],
     "rules": {
         "react/jsx-filename-extension": 0,
         "no-param-reassign": 0,
