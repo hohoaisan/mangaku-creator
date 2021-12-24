@@ -48,30 +48,6 @@ const MainRoutes = {
       element: <DashboardDefault />
     },
     {
-      path: '/utils/util-typography',
-      element: <UtilsTypography />
-    },
-    {
-      path: '/utils/util-color',
-      element: <UtilsColor />
-    },
-    {
-      path: '/utils/util-shadow',
-      element: <UtilsShadow />
-    },
-    {
-      path: '/icons/tabler-icons',
-      element: <UtilsTablerIcons />
-    },
-    {
-      path: '/icons/material-icons',
-      element: <UtilsMaterialIcons />
-    },
-    {
-      path: '/sample-page',
-      element: <SamplePage />
-    },
-    {
       path: '/users',
       element: <ManageUsers />
     },
