@@ -5,10 +5,23 @@ import { Typography } from '@mui/material';
 import NavGroup from './NavGroup';
 import menuItem from 'menu-items';
 
+import useAuth from 'hooks/useAuth';
 // ==============================|| SIDEBAR MENU LIST ||============================== //
 
 const MenuList = () => {
+  const auth = useAuth();
   const navItems = menuItem.items.map((item) => {
+    if (item.role && !item.role.includes(auth.user.role)) {
+      return null;
+    }
+    if (item.children) {
+      item.children = item.children.filter((child) => {
+        if (child.role && !child.role.includes(auth.user.role)) {
+          return false;
+        }
+        return true;
+      });
+    }
     switch (item.type) {
       case 'group':
         return <NavGroup key={item.id} item={item} />;

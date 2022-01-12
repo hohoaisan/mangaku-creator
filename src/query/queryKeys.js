@@ -10,3 +10,4 @@ export const COMICS = 'COMICS';
 export const COMIC = 'COMIC';
 export const CHAPTERS = 'CHAPTERS';
 export const CHAPTER = 'CHAPTER';
+export const PROFILE_AUTHOR = 'PROFILE_AUTHOR';

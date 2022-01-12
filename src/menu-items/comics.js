@@ -30,6 +30,7 @@ const pages = {
       type: 'item',
       icon: icons.IconUsers,
       url: '/authors',
+      role: ['admin', 'mod'],
       breadcrumbs: false
     },
     {
@@ -38,6 +39,7 @@ const pages = {
       type: 'item',
       icon: icons.IconNote,
       url: '/formats',
+      role: ['admin', 'mod'],
       breadcrumbs: false
     },
     {
@@ -46,6 +48,7 @@ const pages = {
       type: 'item',
       icon: icons.IconNote,
       url: '/genres',
+      role: ['admin', 'mod'],
       breadcrumbs: false
     }
   ]
