@@ -33,6 +33,18 @@ const scopes = [
     key: 'manageVisible'
   },
   {
+    label: 'Pending',
+    key: 'managePending'
+  },
+  {
+    label: 'Approved',
+    key: 'manageApproved'
+  },
+  {
+    label: 'Rejected',
+    key: 'manageRejected'
+  },
+  {
     label: 'Deleted',
     key: 'manageDeleted'
   }

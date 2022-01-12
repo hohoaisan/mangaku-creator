@@ -97,6 +97,16 @@ const scopes = [
     hidden: ['deletedAt']
   },
   {
+    label: 'Pending',
+    key: 'managePending',
+    hidden: ['deletedAt']
+  },
+  {
+    label: 'Rejected',
+    key: 'manageRejected',
+    hidden: ['deletedAt']
+  },
+  {
     label: 'Deleted',
     key: 'manageDeleted',
     hidden: ['updatedAt']

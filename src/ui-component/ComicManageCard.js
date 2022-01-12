@@ -5,6 +5,7 @@ import { Delete as DeleteIcon, Edit as EditIcon, Restore as RestoreIcon } from '
 import PropsType from 'prop-types';
 
 import ApprovalStatus from './ApprovalStatus';
+import { statusEnum } from 'constants/approvalStatus';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -170,9 +171,11 @@ const ComicManageCard = ({
           </IconButton>
         ) : (
           <>
-            <IconButton color="default" size="small" onClick={onUpdate}>
-              <EditIcon />
-            </IconButton>
+            {approval === statusEnum.REJECTED || (
+              <IconButton color="default" size="small" onClick={onUpdate}>
+                <EditIcon />
+              </IconButton>
+            )}
             <IconButton color="default" size="small" onClick={onDelete}>
               <DeleteIcon />
             </IconButton>
