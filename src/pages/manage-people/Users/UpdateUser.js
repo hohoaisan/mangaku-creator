@@ -13,7 +13,10 @@ import {
   FormControl,
   FormHelperText,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  FormLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 
 // formik
@@ -28,12 +31,14 @@ import { getUser, updateUser } from 'apis/user';
 // formik
 import { useFormik } from 'formik';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import { selectableRoles, enumRoles, roleNames } from 'configs/roles';
 
 const initialValues = {
   name: '',
   email: '',
   password: '',
   banned: false,
+  role: '',
   emailVerified: false
 };
 
@@ -159,6 +164,29 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
             disabled={query.isFetching}
             label="Email verified"
           />
+        </FormControl>
+
+        <FormControl fullWidth error={Boolean(touched.role && errors.role)} required>
+          <FormLabel>Role</FormLabel>
+          <Select
+            value={values.role}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            id="role"
+            name="role"
+            disabled={values.role === enumRoles.AUTHOR}
+          >
+            {values.role === enumRoles.AUTHOR ? (
+              <MenuItem value={enumRoles.AUTHOR}>{roleNames[enumRoles.AUTHOR]}</MenuItem>
+            ) : (
+              selectableRoles.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.name}
+                </MenuItem>
+              ))
+            )}
+          </Select>
+          {touched.role && errors.role && <FormHelperText error>{errors.role}</FormHelperText>}
         </FormControl>
       </DialogContent>
       <DialogActions>
