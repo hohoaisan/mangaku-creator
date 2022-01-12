@@ -13,7 +13,11 @@ import {
   FormControl,
   FormHelperText,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  Select,
+  MenuItem,
+  InputLabel,
+  Box
 } from '@mui/material';
 
 // formik
@@ -28,11 +32,13 @@ import { getAuthor, updateAuthor } from 'apis/author';
 // formik
 import { useFormik } from 'formik';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import { statusOptions } from 'constants/approvalStatus';
 
 const initialValues = {
   key: '',
   name: '',
   description: '',
+  approval_status: null,
   restricted: false
 };
 
@@ -50,7 +56,6 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
   });
   const onSubmit = async (values, { setSubmitting }) => {
     try {
-      console.log(values);
       setSubmitting(true);
       await updateAuthor(values);
       queryClient.invalidateQueries([AUTHOR, selectedItem.id]);
@@ -109,6 +114,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
             variant="outlined"
             label="Author description"
             autoFocus
+            multiline
             required={false}
             margin="dense"
             onBlur={handleBlur}
@@ -117,18 +123,40 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
           />
           {touched.description && errors.description && <FormHelperText error>{errors.description}</FormHelperText>}
         </FormControl>
-        <FormControl fullWidth error={Boolean(touched.description && errors.description)}>
-          <FormControlLabel
-            control={<Checkbox />}
-            name="restricted"
-            checked={values.restricted}
-            value={values.restricted}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            disabled={query.isFetching}
-            label="Restrict"
-          />
-        </FormControl>
+        {values.approval_status !== null && (
+          <Box marginY={2}>
+            <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
+              <InputLabel>Approval Status</InputLabel>
+              <Select
+                label="Approval Status"
+                value={values.approval_status}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                id="approval_status"
+                name="approval_status"
+              >
+                {statusOptions.map((option, index) => (
+                  <MenuItem key={index} value={option.value}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {touched.approval_status && errors.approval_status && <FormHelperText error>{errors.approval_status}</FormHelperText>}
+            </FormControl>
+            <FormControl fullWidth error={Boolean(touched.description && errors.description)}>
+              <FormControlLabel
+                control={<Checkbox />}
+                name="restricted"
+                checked={values.restricted}
+                value={values.restricted}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                disabled={query.isFetching}
+                label="Restrict"
+              />
+            </FormControl>
+          </Box>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>

@@ -52,7 +52,7 @@ export const createComicChapter = async (comicId, props, AxiosOptions) => {
 };
 
 export const updateComicChapter = async (comicId, chapterId, props, AxiosOptions) => {
-  const data = pick(props, ['number', 'name', 'volume', 'pages']);
+  const data = pick(props, ['number', 'name', 'volume', 'pages', 'approval_status']);
   const result = await axios
     .request({
       ...AxiosOptions,

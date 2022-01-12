@@ -1,7 +1,19 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 // material-ui
-import { TextField, FormControl, FormHelperText, Button, Stack, IconButton, FormLabel, Autocomplete, Box } from '@mui/material';
+import {
+  TextField,
+  FormControl,
+  FormHelperText,
+  Button,
+  Stack,
+  IconButton,
+  FormLabel,
+  Autocomplete,
+  Box,
+  Select,
+  MenuItem
+} from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { useFormik } from 'formik';
 
@@ -38,12 +50,14 @@ import { getAllAuthors } from 'apis/author';
 import { updateComic, getComic } from 'apis/comic';
 import ToastService from 'services/toast.service';
 import pick from 'utils/pick';
+import { statusOptions } from 'constants/approvalStatus';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
 const initialValues = {
   title: '',
   description: '',
+  approval_status: null,
   authors: [],
   genres: [],
   formats: [],
@@ -98,7 +112,7 @@ const UpdateComic = () => {
 
   const resetForm = useCallback(() => {
     if (comicQuery.data) {
-      const initialValue = pick(comicQuery.data, ['title', 'description', 'authors', 'genres', 'formats', 'covers']);
+      const initialValue = pick(comicQuery.data, ['title', 'description', 'authors', 'genres', 'formats', 'covers', 'approval_status']);
       setValues(initialValue);
     }
   }, [comicQuery.data, setValues]);
@@ -202,6 +216,19 @@ const UpdateComic = () => {
           />
           {touched.description && errors.description && <FormHelperText error>{errors.description}</FormHelperText>}
         </FormControl>
+        {values.approval_status !== null && (
+          <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
+            <FormLabel>Approval Status</FormLabel>
+            <Select value={values.approval_status} onChange={handleChange} onBlur={handleBlur} id="approval_status" name="approval_status">
+              {statusOptions.map((option, index) => (
+                <MenuItem key={index} value={option.value}>
+                  {option.name}
+                </MenuItem>
+              ))}
+            </Select>
+            {touched.approval_status && errors.approval_status && <FormHelperText error>{errors.approval_status}</FormHelperText>}
+          </FormControl>
+        )}
         <FormControl fullWidth error={Boolean(touched.authors && errors.authors)} required>
           <FormLabel>Authors</FormLabel>
           <Autocomplete

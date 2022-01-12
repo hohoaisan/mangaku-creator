@@ -15,7 +15,9 @@ import {
   Box,
   Typography,
   Container,
-  Grid
+  Grid,
+  Select,
+  MenuItem
 } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { useFormik } from 'formik';
@@ -49,6 +51,7 @@ import { COMIC, CHAPTER } from 'query/queryKeys';
 import { getComic } from 'apis/comic';
 import { getChapter, updateComicChapter } from 'apis/chapter';
 import ToastService from 'services/toast.service';
+import { statusOptions } from 'constants/approvalStatus';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
@@ -56,6 +59,7 @@ const initialValues = {
   number: 0,
   name: '',
   volume: 1,
+  approval_status: null,
   pages: []
 };
 
@@ -73,7 +77,6 @@ const UpdateChapter = () => {
     try {
       setSubmitting(true);
       const formValues = formatChapterFormData(values);
-      console.log(formValues);
       await updateComicChapter(comicId, chapterId, formValues);
       queryClient.invalidateQueries(CHAPTER);
       ToastService.success('Chapter updated');
@@ -110,7 +113,7 @@ const UpdateChapter = () => {
 
   const resetForm = useCallback(() => {
     if (chapterQuery.data) {
-      const initialValue = pick(chapterQuery.data, ['number', 'name', 'volume', 'pages']);
+      const initialValue = pick(chapterQuery.data, ['number', 'name', 'volume', 'pages', 'approval_status']);
       setValues(initialValue);
     }
   }, [chapterQuery.data, setValues]);
@@ -255,7 +258,25 @@ const UpdateChapter = () => {
             />
             {touched.name && errors.name && <FormHelperText error>{errors.name}</FormHelperText>}
           </FormControl>
-
+          {values.approval_status !== null && (
+            <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
+              <FormLabel>Approval Status</FormLabel>
+              <Select
+                value={values.approval_status}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                id="approval_status"
+                name="approval_status"
+              >
+                {statusOptions.map((option, index) => (
+                  <MenuItem key={index} value={option.value}>
+                    {option.name}
+                  </MenuItem>
+                ))}
+              </Select>
+              {touched.approval_status && errors.approval_status && <FormHelperText error>{errors.approval_status}</FormHelperText>}
+            </FormControl>
+          )}
           <FormControl fullWidth error={Boolean(touched.pages && errors.pages)} required>
             <FormLabel>Pages</FormLabel>
             {touched.formats && errors.pages && <FormHelperText error>{errors.pages}</FormHelperText>}

@@ -59,7 +59,7 @@ export const createChapterSchema = Yup.object().shape({
 });
 
 export const formatComicFormData = (values) => {
-  const formValues = pick(values, ['title', 'description']);
+  const formValues = pick(values, ['title', 'description', 'approval_status']);
   formValues.comic_authors = values.authors.map((author) => ({ authorId: author.id }));
   formValues.comic_genres = values.genres.map((genre) => ({ genreId: genre.id }));
   formValues.comic_formats = values.formats.map((format) => ({ formatId: format.id }));
@@ -68,7 +68,7 @@ export const formatComicFormData = (values) => {
 };
 
 export const formatChapterFormData = (values) => {
-  const formValues = pick(values, ['number', 'name', 'volume']);
+  const formValues = pick(values, ['number', 'name', 'volume', 'approval_status']);
   formValues.pages = values.pages.map((page, index) => ({ imageId: page.imageId, order: index + 1 }));
   return formValues;
 };

@@ -52,7 +52,7 @@ export const createUser = async (props, AxiosOptions) => {
 
 export const updateUser = async (props, AxiosOptions) => {
   const id = props.id;
-  const data = pick(props, ['name', 'email', 'emailVerified', 'banned']);
+  const data = pick(props, ['name', 'email', 'emailVerified', 'banned', 'role']);
   console.log({ data, props });
   const result = await axios
     .request({
