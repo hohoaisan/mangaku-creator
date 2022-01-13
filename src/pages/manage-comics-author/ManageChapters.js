@@ -10,11 +10,11 @@ import Spinner from 'ui-component/api-process/Spinner';
 import Error from 'ui-component/api-process/Error';
 
 import DeleteChapter from './DeleteChapter';
-import RestoreChapter from './RestoreChapter';
+import RestoreChapter from '../manage-comics/Comics/RestoreChapter';
 // react query
 import { useQuery } from 'react-query';
 import { CHAPTERS } from 'query/queryKeys';
-import { getAllChapters } from 'apis/chapter';
+import { getAllChapters } from 'apis/chapterAuthor';
 
 // utils
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
@@ -105,11 +105,6 @@ const scopes = [
     label: 'Rejected',
     key: 'manageRejected',
     hidden: ['deletedAt']
-  },
-  {
-    label: 'Deleted',
-    key: 'manageDeleted',
-    hidden: ['updatedAt']
   }
 ];
 

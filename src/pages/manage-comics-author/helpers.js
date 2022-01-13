@@ -4,14 +4,6 @@ import * as Yup from 'yup';
 export const createSchema = Yup.object().shape({
   title: Yup.string().max(255).required('Title is required'),
   description: Yup.string().max(5000).required('Description is required'),
-  authors: Yup.array()
-    .of(
-      Yup.object().shape({
-        id: Yup.string(),
-        name: Yup.string()
-      })
-    )
-    .min(1, 'Author is required'),
   genres: Yup.array()
     .of(
       Yup.object().shape({
@@ -59,8 +51,7 @@ export const createChapterSchema = Yup.object().shape({
 });
 
 export const formatComicFormData = (values) => {
-  const formValues = pick(values, ['title', 'description', 'approval_status']);
-  formValues.comic_authors = values.authors.map((author) => ({ authorId: author.id }));
+  const formValues = pick(values, ['title', 'description']);
   formValues.comic_genres = values.genres.map((genre) => ({ genreId: genre.id }));
   formValues.comic_formats = values.formats.map((format) => ({ formatId: format.id }));
   formValues.comic_covers = values.covers.map((cover) => ({ imageId: cover.id, default: cover.default }));
@@ -68,7 +59,7 @@ export const formatComicFormData = (values) => {
 };
 
 export const formatChapterFormData = (values) => {
-  const formValues = pick(values, ['number', 'name', 'volume', 'approval_status']);
+  const formValues = pick(values, ['number', 'name', 'volume']);
   formValues.pages = values.pages.map((page, index) => ({ imageId: page.imageId, order: index + 1 }));
   return formValues;
 };

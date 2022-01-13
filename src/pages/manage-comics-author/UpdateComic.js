@@ -1,19 +1,7 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 // material-ui
-import {
-  TextField,
-  FormControl,
-  FormHelperText,
-  Button,
-  Stack,
-  IconButton,
-  FormLabel,
-  Autocomplete,
-  Box,
-  Select,
-  MenuItem
-} from '@mui/material';
+import { TextField, FormControl, FormHelperText, Button, Stack, IconButton, FormLabel, Autocomplete, Box } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { useFormik } from 'formik';
 
@@ -33,8 +21,6 @@ import Spinner from 'ui-component/api-process/Spinner';
 import Error from 'ui-component/api-process/Error';
 
 // utils
-// eslint-disable-next-line import/no-extraneous-dependencies
-import debounce from 'lodash/debounce';
 import resolveImgUrl from 'utils/resolveImageUrl';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 
@@ -43,22 +29,18 @@ import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 // react query
 import queryClient from 'query';
 import { useQuery } from 'react-query';
-import { GENRES, FORMATS, AUTHORS, COMICS, COMIC } from 'query/queryKeys';
+import { GENRES, FORMATS, COMICS, COMIC } from 'query/queryKeys';
 import { getAllGenres } from 'apis/genre';
 import { getAllFormats } from 'apis/format';
-import { getAllAuthors } from 'apis/author';
-import { updateComic, getComic } from 'apis/comic';
+import { getAuthorComic, updateAuthorComic } from 'apis/comicAuthor';
 import ToastService from 'services/toast.service';
 import pick from 'utils/pick';
-import { statusOptions } from 'constants/approvalStatus';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
 const initialValues = {
   title: '',
   description: '',
-  approval_status: null,
-  authors: [],
   genres: [],
   formats: [],
   covers: []
@@ -66,17 +48,8 @@ const initialValues = {
 
 const UpdateComic = () => {
   const { comicId } = useParams();
-  const comicQuery = useQuery([COMIC, comicId], () => getComic(comicId, { params: { scope: 'manageDetail' } }));
-  const [authorQueries, setAuthorQueries] = useState({ scope: 'visible', page: 1, limit: 10, search: '' });
-  const authorsQuery = useQuery([AUTHORS, authorQueries], () => getAllAuthors(authorQueries), {
-    keepPreviousData: true
-  });
-  const handleAuthorQuery = useMemo(() => {
-    const loadOptions = (searchQuery) => {
-      setAuthorQueries({ ...authorQueries, search: searchQuery.trim() });
-    };
-    return debounce(loadOptions, 1000);
-  }, [authorQueries]);
+  const comicQuery = useQuery([COMIC, comicId], () => getAuthorComic(comicId, { params: { scope: 'manageDetail' } }));
+
   const genresQuery = useQuery([GENRES], () => getAllGenres(), {
     keepPreviousData: true
   });
@@ -93,7 +66,7 @@ const UpdateComic = () => {
     try {
       setSubmitting(true);
       const formValues = formatComicFormData(values);
-      await updateComic(comicId, formValues);
+      await updateAuthorComic(comicId, formValues);
       queryClient.invalidateQueries(COMICS);
       ToastService.success('Comic updated');
       comicQuery.refetch();
@@ -112,7 +85,7 @@ const UpdateComic = () => {
 
   const resetForm = useCallback(() => {
     if (comicQuery.data) {
-      const initialValue = pick(comicQuery.data, ['title', 'description', 'authors', 'genres', 'formats', 'covers', 'approval_status']);
+      const initialValue = pick(comicQuery.data, ['title', 'description', 'authors', 'genres', 'formats', 'covers']);
       setValues(initialValue);
     }
   }, [comicQuery.data, setValues]);
@@ -144,7 +117,6 @@ const UpdateComic = () => {
     comicQuery.refetch();
     genresQuery.refetch();
     formatsQuery.refetch();
-    authorsQuery.refetch();
   };
 
   if (comicQuery.isFetched && comicQuery.isError) {
@@ -159,11 +131,7 @@ const UpdateComic = () => {
     const message = getAPIErrorMessage(formatsQuery.error);
     return <Error refresh={refresh} message={message} />;
   }
-  if (authorsQuery.isFetched && authorsQuery.isError) {
-    const message = getAPIErrorMessage(authorsQuery.error);
-    return <Error refresh={refresh} message={message} />;
-  }
-  if (comicQuery.isLoading || genresQuery.isLoading || formatsQuery.isLoading || authorsQuery.isLoading) {
+  if (comicQuery.isLoading || genresQuery.isLoading || formatsQuery.isLoading) {
     return <Spinner />;
   }
 
@@ -215,41 +183,6 @@ const UpdateComic = () => {
             minRows={3}
           />
           {touched.description && errors.description && <FormHelperText error>{errors.description}</FormHelperText>}
-        </FormControl>
-        {values.approval_status !== null && (
-          <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
-            <FormLabel>Approval Status</FormLabel>
-            <Select value={values.approval_status} onChange={handleChange} onBlur={handleBlur} id="approval_status" name="approval_status">
-              {statusOptions.map((option, index) => (
-                <MenuItem key={index} value={option.value}>
-                  {option.name}
-                </MenuItem>
-              ))}
-            </Select>
-            {touched.approval_status && errors.approval_status && <FormHelperText error>{errors.approval_status}</FormHelperText>}
-          </FormControl>
-        )}
-        <FormControl fullWidth error={Boolean(touched.authors && errors.authors)} required>
-          <FormLabel>Authors</FormLabel>
-          <Autocomplete
-            multiple
-            options={authorsQuery.data?.data}
-            getOptionLabel={(option) => option.name}
-            value={values.authors}
-            onChange={(event, values) => {
-              handleChange(event);
-              setFieldValue('authors', values);
-            }}
-            loading={authorsQuery.isLoading || authorsQuery.isRefetching}
-            onInputChange={(event, newInputValue) => {
-              handleAuthorQuery(newInputValue);
-            }}
-            isOptionEqualToValue={(option, value) => option.id === value.id}
-            filterSelectedOptions
-            filterOptions={(x) => x}
-            renderInput={(params) => <TextField onBlur={handleBlur} name="authors" {...params} />}
-          />
-          {touched.authors && errors.authors && <FormHelperText error>{errors.authors}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.genres && errors.genres)} required>
           <FormLabel>Genres</FormLabel>

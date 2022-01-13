@@ -9,12 +9,11 @@ import Spinner from 'ui-component/api-process/Spinner';
 import Error from 'ui-component/api-process/Error';
 
 import DeleteComic from './DeleteComic';
-import RestoreComic from './RestoreComic';
+import RestoreComic from '../manage-comics/Comics/RestoreComic';
 
 // react query
 import { useQuery } from 'react-query';
 import { COMICS } from 'query/queryKeys';
-import { getAllComics } from 'apis/comic';
 
 // utils
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
@@ -26,6 +25,7 @@ import ComicManageCard from 'ui-component/ComicManageCard';
 // import columns from './columns';
 import useSearchParams from 'hooks/useSearchParams';
 import resolveImgUrl from 'utils/resolveImageUrl';
+import { getAuthorComics } from 'apis/comicAuthor';
 
 const scopes = [
   {
@@ -37,16 +37,8 @@ const scopes = [
     key: 'managePending'
   },
   {
-    label: 'Approved',
-    key: 'manageApproved'
-  },
-  {
     label: 'Rejected',
     key: 'manageRejected'
-  },
-  {
-    label: 'Deleted',
-    key: 'manageDeleted'
   }
 ];
 
@@ -62,9 +54,10 @@ const ManageComics = () => {
   const navigate = useNavigate();
   const [queries, setQueries] = useSearchParams(initParams);
   const [currentTab, setCurrentTab] = useState(scopes.findIndex(({ key }) => key === queries.scope));
-  const comicsQuery = useQuery([COMICS, queries], () => getAllComics(queries), {
+  const comicsQuery = useQuery([COMICS, queries], () => getAuthorComics(queries), {
     keepPreviousData: true
   });
+
   const [selectedItem, setSelectedItem] = React.useState(null);
 
   const [openModal, setOpenModal] = React.useState({
@@ -114,7 +107,7 @@ const ManageComics = () => {
     const message = getAPIErrorMessage(comicsQuery.error);
     return <Error refresh={refresh} message={message} />;
   }
-  if (comicsQuery.isLoading) {
+  if (comicsQuery.isLoading || !comicsQuery.data) {
     return <Spinner />;
   }
   return (

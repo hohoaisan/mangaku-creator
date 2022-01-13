@@ -12,6 +12,7 @@ const pages = {
   id: 'people',
   title: 'People',
   type: 'group',
+  role: ['admin'],
   children: [
     {
       id: 'user',

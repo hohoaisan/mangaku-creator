@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import pick from 'utils/pick';
 // material-ui
 import {
   TextField,
@@ -15,9 +14,7 @@ import {
   Box,
   Typography,
   Container,
-  Grid,
-  Select,
-  MenuItem
+  Grid
 } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
 import { useFormik } from 'formik';
@@ -47,11 +44,10 @@ import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 // react query
 import queryClient from 'query';
 import { useQuery } from 'react-query';
-import { COMIC, CHAPTER } from 'query/queryKeys';
-import { getComic } from 'apis/comic';
-import { getChapter, updateComicChapter } from 'apis/chapter';
+import { COMIC, CHAPTERS } from 'query/queryKeys';
+import { getAuthorComic } from 'apis/comicAuthor';
+import { createComicChapter } from 'apis/chapterAuthor';
 import ToastService from 'services/toast.service';
-import { statusOptions } from 'constants/approvalStatus';
 
 // ==============================|| SAMPLE PAGE ||============================== //
 
@@ -59,27 +55,27 @@ const initialValues = {
   number: 0,
   name: '',
   volume: 1,
-  approval_status: null,
   pages: []
 };
 
-const UpdateChapter = () => {
-  const { comicId, chapterId } = useParams();
-  const comicQuery = useQuery([COMIC, comicId], () => getComic(comicId, { params: { scope: 'manageDetail' } }));
-  const chapterQuery = useQuery([CHAPTER, chapterId], () => getChapter(comicId, chapterId, { params: { scope: 'manageDetail' } }));
+const UploadChapter = () => {
+  const { comicId } = useParams();
+  const comicQuery = useQuery([COMIC, comicId], () => getAuthorComic(comicId, { params: { scope: 'manageDetail' } }));
 
   const [openModal, setOpenModal] = useState({
     uploadCover: false
   });
 
   const uppy = useUppy();
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values, { resetForm, setSubmitting, setFieldValue }) => {
     try {
       setSubmitting(true);
       const formValues = formatChapterFormData(values);
-      await updateComicChapter(comicId, chapterId, formValues);
-      queryClient.invalidateQueries(CHAPTER);
-      ToastService.success('Chapter updated');
+      await createComicChapter(comicId, formValues);
+      queryClient.invalidateQueries(CHAPTERS);
+      ToastService.success('Chapter uploaded');
+      resetForm();
+      setFieldValue('number', formValues.number ? formValues.number + 1 : 1);
     } catch (err) {
       const message = getAPIErrorMessage(err);
       ToastService.error(message);
@@ -87,7 +83,7 @@ const UpdateChapter = () => {
       setSubmitting(false);
     }
   };
-  const { handleSubmit, values, handleBlur, handleChange, touched, errors, setFieldValue, setValues } = useFormik({
+  const { handleSubmit, values, handleBlur, handleChange, touched, errors, setFieldValue, resetForm } = useFormik({
     validationSchema,
     initialValues,
     onSubmit
@@ -95,10 +91,10 @@ const UpdateChapter = () => {
 
   const handlePageDeletion = useCallback(
     (id) => {
-      const images = values.pages.filter((image) => image.imageId !== id);
+      const images = values.pages.filter((image) => image.id !== id);
       setFieldValue('pages', images);
     },
-    [values.pages, setFieldValue]
+    [setFieldValue, values.pages]
   );
 
   const handlePagePositionChange = useCallback(
@@ -111,24 +107,13 @@ const UpdateChapter = () => {
     [values.pages, setFieldValue]
   );
 
-  const resetForm = useCallback(() => {
-    if (chapterQuery.data) {
-      const initialValue = pick(chapterQuery.data, ['number', 'name', 'volume', 'pages', 'approval_status']);
-      setValues(initialValue);
-    }
-  }, [chapterQuery.data, setValues]);
-
-  useEffect(() => {
-    resetForm();
-  }, [chapterQuery.data, resetForm]);
-
   const DraggableRender = useCallback(() => {
     if (values.pages && values.pages.length) {
       return (
         <Draggable onPosChange={handlePagePositionChange}>
-          {values.pages.map(({ imageId, url }, index) => (
-            <Box maxWidth="fit-content" key={imageId} padding={1}>
-              <ChapterImageCard page={index + 1} url={resolveImgUrl(url)} onRemove={() => handlePageDeletion(imageId)} />
+          {values.pages.map(({ id, url }, index) => (
+            <Box maxWidth="fit-content" key={id} padding={1}>
+              <ChapterImageCard page={index + 1} url={resolveImgUrl(url)} onRemove={() => handlePageDeletion(id)} />
             </Box>
           ))}
         </Draggable>
@@ -161,14 +146,14 @@ const UpdateChapter = () => {
   return (
     <Container>
       <MainCard
-        title="Update chapter"
+        title="Upload chapter"
         secondary={
           <Stack direction="row" spacing={1}>
             <IconButton onClick={resetForm}>
               <RefreshIcon />
             </IconButton>
             <Button variant="contained" onClick={handleSubmit}>
-              Update
+              Upload
             </Button>
           </Stack>
         }
@@ -258,25 +243,7 @@ const UpdateChapter = () => {
             />
             {touched.name && errors.name && <FormHelperText error>{errors.name}</FormHelperText>}
           </FormControl>
-          {values.approval_status !== null && (
-            <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
-              <FormLabel>Approval Status</FormLabel>
-              <Select
-                value={values.approval_status}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                id="approval_status"
-                name="approval_status"
-              >
-                {statusOptions.map((option, index) => (
-                  <MenuItem key={index} value={option.value}>
-                    {option.name}
-                  </MenuItem>
-                ))}
-              </Select>
-              {touched.approval_status && errors.approval_status && <FormHelperText error>{errors.approval_status}</FormHelperText>}
-            </FormControl>
-          )}
+
           <FormControl fullWidth error={Boolean(touched.pages && errors.pages)} required>
             <FormLabel>Pages</FormLabel>
             {touched.formats && errors.pages && <FormHelperText error>{errors.pages}</FormHelperText>}
@@ -308,4 +275,4 @@ const UpdateChapter = () => {
   );
 };
 
-export default UpdateChapter;
+export default UploadChapter;

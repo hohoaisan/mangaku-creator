@@ -68,6 +68,7 @@ class AuthService {
       if (tokenExpired) {
         ToastService.success('Token expired, Logged out');
       } else ToastService.success('Logged out');
+      window.location.href = '/login';
     }
     return Promise.resolve();
   }

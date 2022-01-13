@@ -51,7 +51,7 @@ export const createComic = async (props, AxiosOptions) => {
 };
 
 export const updateComic = async (id, props, AxiosOptions) => {
-  const data = pick(props, ['title', 'description', 'comic_authors', 'comic_genres', 'comic_formats', 'comic_covers']);
+  const data = pick(props, ['title', 'description', 'comic_authors', 'comic_genres', 'comic_formats', 'comic_covers', 'approval_status']);
   const result = await axios
     .request({
       ...AxiosOptions,

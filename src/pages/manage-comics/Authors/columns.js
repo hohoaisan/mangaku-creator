@@ -1,5 +1,5 @@
 import { Chip, Avatar } from '@mui/material';
-import { status } from 'constants/approvalStatus';
+import { status, statusEnum } from 'constants/approvalStatus';
 
 const columns = [
   {
@@ -37,14 +37,14 @@ const columns = [
     flex: 1,
     renderCell: (rowParams) => {
       switch (rowParams.value) {
-        case 'APPROVED': {
-          return <Chip color="success" label={status.APPROVED} size="small" />;
+        case statusEnum.APPROVED: {
+          return <Chip color="success" label={status[statusEnum.APPROVED]} size="small" />;
         }
-        case 'PENDING': {
-          return <Chip color="warning" label={status.PENDING} size="small" />;
+        case statusEnum.PENDING: {
+          return <Chip color="warning" label={status[statusEnum.PENDING]} size="small" />;
         }
-        case 'REJECTED': {
-          return <Chip color="error" label={status.REJECTED} size="small" />;
+        case statusEnum.REJECTED: {
+          return <Chip color="error" label={status[statusEnum.REJECTED]} size="small" />;
         }
         default: {
           return <Chip label="N/A" size="small" />;

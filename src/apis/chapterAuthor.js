@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import axios from './_axios/axios';
 import pick from 'utils/pick';
-import * as comicEP from './_endpoints/comic';
+import * as authorEP from './_endpoints/author';
 
 export const getAllChapters = async (comicId, props, AxiosOptions) => {
   const data = pick(props, ['scope', 'page', 'limit', 'sortBy']);
@@ -9,7 +9,7 @@ export const getAllChapters = async (comicId, props, AxiosOptions) => {
     .request({
       ...AxiosOptions,
       method: 'get',
-      url: comicEP.COMIC_CHAPTERS.replace(':comicId', comicId),
+      url: authorEP.AUTHOR_COMIC_CHAPTERS.replace(':comicId', comicId),
       params: data
     })
     .then((res) => res.data);
@@ -21,7 +21,7 @@ export const getChapter = async (comicId, chapterId, AxiosOptions) => {
     .request({
       ...AxiosOptions,
       method: 'get',
-      url: comicEP.COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId)
+      url: authorEP.AUTHOR_COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId)
     })
     .then((res) => res.data);
   return result;
@@ -32,7 +32,7 @@ export const deleteComicChapter = async (comicId, chapterId, AxiosOptions) => {
     .request({
       ...AxiosOptions,
       method: 'delete',
-      url: comicEP.COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId)
+      url: authorEP.AUTHOR_COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId)
     })
     .then((res) => res.data);
   return result;
@@ -44,7 +44,7 @@ export const createComicChapter = async (comicId, props, AxiosOptions) => {
     .request({
       ...AxiosOptions,
       method: 'post',
-      url: comicEP.COMIC_CHAPTERS.replace(':comicId', comicId),
+      url: authorEP.AUTHOR_COMIC_CHAPTERS.replace(':comicId', comicId),
       data
     })
     .then((res) => res.data);
@@ -52,27 +52,13 @@ export const createComicChapter = async (comicId, props, AxiosOptions) => {
 };
 
 export const updateComicChapter = async (comicId, chapterId, props, AxiosOptions) => {
-  const data = pick(props, ['number', 'name', 'volume', 'pages', 'approval_status']);
+  const data = pick(props, ['number', 'name', 'volume', 'pages']);
   const result = await axios
     .request({
       ...AxiosOptions,
       method: 'patch',
-      url: comicEP.COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId),
+      url: authorEP.AUTHOR_COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId),
       data
-    })
-    .then((res) => res.data);
-  return result;
-};
-
-export const restoreChapter = async (comicId, chapterId, AxiosOptions) => {
-  const result = await axios
-    .request({
-      ...AxiosOptions,
-      method: 'patch',
-      url: comicEP.COMIC_CHAPTER.replace(':comicId', comicId).replace(':chapterId', chapterId),
-      data: {
-        restore: true
-      }
     })
     .then((res) => res.data);
   return result;

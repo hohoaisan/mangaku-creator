@@ -1,8 +1,8 @@
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
+import { Link, Divider, Grid, Stack, Typography, useMediaQuery } from '@mui/material';
 
 // project imports
 import AuthWrapper1 from './wrappers/AuthWrapper1';
@@ -12,7 +12,7 @@ import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
 
-// assets
+const REGISTER_URL = `${process.env.REACT_APP_CLIENT_HOST}register`;
 
 // ================================|| AUTH3 - LOGIN ||================================ //
 
@@ -58,7 +58,7 @@ const Login = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
-                      <Typography component={Link} to="/register" variant="subtitle1" sx={{ textDecoration: 'none' }}>
+                      <Typography component={Link} href={REGISTER_URL} target="_blank" variant="subtitle1" sx={{ textDecoration: 'none' }}>
                         Don&apos;t have an account?
                       </Typography>
                     </Grid>

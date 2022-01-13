@@ -52,7 +52,7 @@ export const createAuthor = async (props, AxiosOptions) => {
 
 export const updateAuthor = async (props, AxiosOptions) => {
   const id = props.id;
-  const data = pick(props, ['name', 'description', 'restricted']);
+  const data = pick(props, ['name', 'description', 'restricted', 'approval_status']);
   console.log({ data, props });
   const result = await axios
     .request({
