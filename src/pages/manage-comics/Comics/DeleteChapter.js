@@ -12,6 +12,12 @@ import { deleteComicChapter } from 'apis/chapter';
 
 // toast
 import ToastService from 'services/toast.service';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { chapter: chapterPageStrings }
+} = strings;
 
 const DeleteChapter = ({ open, onClose, selectedItem }) => {
   const { comicId } = useParams();
@@ -19,7 +25,7 @@ const DeleteChapter = ({ open, onClose, selectedItem }) => {
     onMutate: async () => {},
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Deleted chapter ${selectedItem.name}`);
+      ToastService.success(chapterPageStrings.mutations.deleteSuccess);
     },
     onSettled: () => {
       queryClient.invalidateQueries(CHAPTERS);
@@ -31,16 +37,16 @@ const DeleteChapter = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Delete Chapter</DialogTitle>
+      <DialogTitle>{chapterPageStrings.delete}</DialogTitle>
       <DialogContent>
-        Are you sure want to delete this chapter {selectedItem.number} - &quot;{selectedItem.name}&quot;
+        {chapterPageStrings.prompt.deleteChapter} {selectedItem.number} - &quot;{selectedItem.name}&quot;
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

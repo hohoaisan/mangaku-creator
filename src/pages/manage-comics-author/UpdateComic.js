@@ -35,8 +35,13 @@ import { getAllFormats } from 'apis/format';
 import { getAuthorComic, updateAuthorComic } from 'apis/comicAuthor';
 import ToastService from 'services/toast.service';
 import pick from 'utils/pick';
+import strings from 'constants/strings';
 
-// ==============================|| SAMPLE PAGE ||============================== //
+const {
+  buttons,
+  forms: { labels },
+  pages: { comic: comicPageStrings }
+} = strings;
 
 const initialValues = {
   title: '',
@@ -68,7 +73,7 @@ const UpdateComic = () => {
       const formValues = formatComicFormData(values);
       await updateAuthorComic(comicId, formValues);
       queryClient.invalidateQueries(COMICS);
-      ToastService.success('Comic updated');
+      ToastService.success(comicPageStrings.mutations.updateSuccess);
       comicQuery.refetch();
     } catch (err) {
       const message = getAPIErrorMessage(err);
@@ -137,21 +142,21 @@ const UpdateComic = () => {
 
   return (
     <MainCard
-      title="Update Comic"
+      title={comicPageStrings.update}
       secondary={
         <Stack direction="row" spacing={1}>
           <IconButton onClick={resetForm}>
             <RefreshIcon />
           </IconButton>
           <Button variant="contained" onClick={handleSubmit}>
-            Update
+            {buttons.update}
           </Button>
         </Stack>
       }
     >
       <Stack spacing={2} direction="column">
         <FormControl fullWidth error={Boolean(touched.title && errors.title)} required>
-          <FormLabel>Title</FormLabel>
+          <FormLabel>{labels.title}</FormLabel>
           <TextField
             required
             margin="dense"
@@ -159,7 +164,7 @@ const UpdateComic = () => {
             type="text"
             fullWidth
             variant="outlined"
-            title="Title"
+            title={labels.title}
             value={values.title}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -167,7 +172,7 @@ const UpdateComic = () => {
           {touched.title && errors.title && <FormHelperText error>{errors.title}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.description && errors.description)} required>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>{labels.description}</FormLabel>
           <TextField
             required
             margin="dense"
@@ -175,7 +180,7 @@ const UpdateComic = () => {
             type="text"
             fullWidth
             variant="outlined"
-            title="Description"
+            title={labels.description}
             value={values.description}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -185,7 +190,7 @@ const UpdateComic = () => {
           {touched.description && errors.description && <FormHelperText error>{errors.description}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.genres && errors.genres)} required>
-          <FormLabel>Genres</FormLabel>
+          <FormLabel>{labels.genre}</FormLabel>
           <Autocomplete
             multiple
             options={genresQuery.data}
@@ -202,7 +207,7 @@ const UpdateComic = () => {
           {touched.genres && errors.genres && <FormHelperText error>{errors.genres}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.formats && errors.formats)} required>
-          <FormLabel>Formats</FormLabel>
+          <FormLabel>{labels.format}</FormLabel>
           <Autocomplete
             multiple
             options={formatsQuery.data}
@@ -219,7 +224,7 @@ const UpdateComic = () => {
           {touched.formats && errors.formats && <FormHelperText error>{errors.formats}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.covers && errors.covers)} required>
-          <FormLabel>Covers</FormLabel>
+          <FormLabel>{labels.covers}</FormLabel>
           {touched.formats && errors.covers && <FormHelperText error>{errors.covers}</FormHelperText>}
           <Stack direction="row" flexWrap="wrap">
             {!!values?.covers?.length &&

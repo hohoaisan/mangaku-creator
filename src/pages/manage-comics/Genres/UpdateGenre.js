@@ -17,6 +17,13 @@ import { getGenre, updateGenre } from 'apis/genre';
 // formik
 import { useFormik } from 'formik';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  forms: { labels, validations },
+  pages: { genre: genrePageStrings }
+} = strings;
 
 const initialValues = {
   key: '',
@@ -34,7 +41,7 @@ const forms = [
   {
     name: 'name',
     options: {
-      label: 'Genre name',
+      label: labels.name,
       autoFocus: true,
       required: false
     }
@@ -42,14 +49,14 @@ const forms = [
   {
     name: 'key',
     options: {
-      label: 'Genre key',
+      label: labels.key,
       required: false
     }
   },
   {
     name: 'description',
     options: {
-      label: 'Genre desciption',
+      label: labels.description,
       multiline: true,
       rows: 3,
       required: false
@@ -68,7 +75,7 @@ const UpdateGenre = ({ open, onClose, selectedItem } = {}) => {
       await updateGenre(values);
       queryClient.invalidateQueries([GENRE, selectedItem.id]);
       queryClient.invalidateQueries(GENRES);
-      ToastService.success('Genre updated');
+      ToastService.success(genrePageStrings.mutations.updateSuccess);
     } catch (err) {
       const message = getAPIErrorMessage(err);
       ToastService.error(message);
@@ -116,10 +123,10 @@ const UpdateGenre = ({ open, onClose, selectedItem } = {}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>
-          Close
+          {buttons.close}
         </Button>
         <Button onClick={handleSubmit} disabled={isSubmitting || query.isFetching || query.isError}>
-          Update
+          {buttons.update}
         </Button>
       </DialogActions>
     </Dialog>

@@ -1,22 +1,27 @@
 import { Chip, Avatar } from '@mui/material';
 import { status, statusEnum } from 'constants/approvalStatus';
+import strings from 'constants/strings';
+
+const {
+  common: { columns: columnStrings }
+} = strings;
 
 const columns = [
   {
     field: 'name',
-    headerName: 'Name',
+    headerName: columnStrings.name,
     minWidth: 200,
     flex: 1
   },
   {
     field: 'description',
-    headerName: 'Description',
+    headerName: columnStrings.description,
     minWidth: 200,
     flex: 1.5
   },
   {
     field: 'user',
-    headerName: 'Author User',
+    headerName: columnStrings.authorUser,
     minWidth: 100,
     flex: 1,
     renderCell: (rowParams) =>
@@ -32,7 +37,7 @@ const columns = [
   },
   {
     field: 'approval_status',
-    headerName: 'Author approval',
+    headerName: columnStrings.approvalStatus,
     minWidth: 120,
     flex: 1,
     renderCell: (rowParams) => {
@@ -54,14 +59,14 @@ const columns = [
   },
   {
     field: 'restricted',
-    headerName: 'Restricted',
+    headerName: columnStrings.restricted,
     width: 120,
     renderCell: (rowParams) =>
       rowParams.value ? <Chip color="error" label="Restrict" size="small" /> : <Chip color="success" label="Normal" size="small" />
   },
   {
     field: 'createdAt',
-    headerName: 'Created at',
+    headerName: columnStrings.createdAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);
@@ -72,7 +77,7 @@ const columns = [
   },
   {
     field: 'deletedAt',
-    headerName: 'Deleted at',
+    headerName: columnStrings.deletedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       if (params.value) {
@@ -85,7 +90,7 @@ const columns = [
   },
   {
     field: 'updatedAt',
-    headerName: 'Last modified',
+    headerName: columnStrings.updatedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);

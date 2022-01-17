@@ -48,8 +48,13 @@ import { COMIC, CHAPTERS } from 'query/queryKeys';
 import { getAuthorComic } from 'apis/comicAuthor';
 import { createComicChapter } from 'apis/chapterAuthor';
 import ToastService from 'services/toast.service';
+import strings from 'constants/strings';
 
-// ==============================|| SAMPLE PAGE ||============================== //
+const {
+  buttons,
+  forms: { labels },
+  pages: { chapter: chapterPageStrings }
+} = strings;
 
 const initialValues = {
   number: 0,
@@ -73,7 +78,7 @@ const UploadChapter = () => {
       const formValues = formatChapterFormData(values);
       await createComicChapter(comicId, formValues);
       queryClient.invalidateQueries(CHAPTERS);
-      ToastService.success('Chapter uploaded');
+      ToastService.success(chapterPageStrings.mutations.uploadSuccess);
       resetForm();
       setFieldValue('number', formValues.number ? formValues.number + 1 : 1);
     } catch (err) {
@@ -146,14 +151,14 @@ const UploadChapter = () => {
   return (
     <Container>
       <MainCard
-        title="Upload chapter"
+        title={chapterPageStrings.upload}
         secondary={
           <Stack direction="row" spacing={1}>
             <IconButton onClick={resetForm}>
               <RefreshIcon />
             </IconButton>
             <Button variant="contained" onClick={handleSubmit}>
-              Upload
+              {buttons.upload}
             </Button>
           </Stack>
         }
@@ -191,7 +196,7 @@ const UploadChapter = () => {
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth error={Boolean(touched.number && errors.number)} required>
-                <FormLabel>Number</FormLabel>
+                <FormLabel>{labels.chapNumber}</FormLabel>
                 <TextField
                   required
                   margin="dense"
@@ -209,7 +214,7 @@ const UploadChapter = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth error={Boolean(touched.volume && errors.volume)} required>
-                <FormLabel>Volume</FormLabel>
+                <FormLabel>{labels.volume}</FormLabel>
                 <TextField
                   required
                   margin="dense"
@@ -228,7 +233,7 @@ const UploadChapter = () => {
           </Grid>
 
           <FormControl fullWidth error={Boolean(touched.name && errors.name)} required>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>{labels.name}</FormLabel>
             <TextField
               required
               margin="dense"
@@ -245,7 +250,7 @@ const UploadChapter = () => {
           </FormControl>
 
           <FormControl fullWidth error={Boolean(touched.pages && errors.pages)} required>
-            <FormLabel>Pages</FormLabel>
+            <FormLabel>{labels.pages}</FormLabel>
             {touched.formats && errors.pages && <FormHelperText error>{errors.pages}</FormHelperText>}
             <Stack
               direction="row"

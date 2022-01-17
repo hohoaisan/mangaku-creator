@@ -12,6 +12,12 @@ import { restoreComic } from 'apis/comic';
 // toast
 import ToastService from 'services/toast.service';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { comic: comicPageStrings }
+} = strings;
 
 const RestoreComic = ({ open, onClose, selectedItem }) => {
   const mutation = useMutation(restoreComic, {
@@ -19,11 +25,11 @@ const RestoreComic = ({ open, onClose, selectedItem }) => {
     onError: async (err) => {
       ToastService.destroyAll();
       const message = getAPIErrorMessage(err);
-      ToastService.error(`Unable to restore comic ${selectedItem.name}, reason: ${message}`);
+      ToastService.error(`${comicPageStrings.mutations.restoreFailed} ${selectedItem.name}: ${message}`);
     },
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Restored comic ${selectedItem.name}`);
+      ToastService.success(`${comicPageStrings.mutations.restoreSuccess} ${selectedItem.name}`);
     },
     onSettled: () => {
       queryClient.invalidateQueries(COMICS);
@@ -35,14 +41,16 @@ const RestoreComic = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Restore Comic</DialogTitle>
-      <DialogContent>Are you sure want to restore this comic &quot;{selectedItem.name}&quot;</DialogContent>
+      <DialogTitle>{comicPageStrings.restore}</DialogTitle>
+      <DialogContent>
+        {comicPageStrings.prompt.restoreComic} &quot;{selectedItem.name}&quot;
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

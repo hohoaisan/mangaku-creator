@@ -20,42 +20,48 @@ import { getAllChapters } from 'apis/chapter';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 import useSearchParams from 'hooks/useSearchParams';
 import ApprovalStatus from 'ui-component/ApprovalStatus';
+import strings from 'constants/strings';
+
+const {
+  common: { columns: columnStrings, tabs },
+  entities: { chapter: chapterStrings }
+} = strings;
 
 const columns = [
   {
     field: 'number',
-    headerName: 'Chapter',
+    headerName: chapterStrings.number,
     minWidth: 120,
     flex: 1
   },
   {
     field: 'volume',
-    headerName: 'Volume',
+    headerName: chapterStrings.volume,
     minWidth: 120,
     flex: 1
   },
   {
     field: 'name',
-    headerName: 'Chapter name',
+    headerName: chapterStrings.name,
     minWidth: 120,
     flex: 2
   },
   {
     field: 'numPages',
-    headerName: 'Pages',
+    headerName: chapterStrings.numPages,
     minWidth: 120,
     flex: 1
   },
   {
     field: 'approval_status',
-    headerName: 'Approval',
+    headerName: columnStrings.approvalStatus,
     minWidth: 120,
     flex: 1,
     renderCell: (rowParams) => <ApprovalStatus approval={rowParams.value} />
   },
   {
     field: 'createdAt',
-    headerName: 'Created at',
+    headerName: columnStrings.createdAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);
@@ -66,7 +72,7 @@ const columns = [
   },
   {
     field: 'deletedAt',
-    headerName: 'Deleted at',
+    headerName: columnStrings.deletedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       if (params.value) {
@@ -79,7 +85,7 @@ const columns = [
   },
   {
     field: 'updatedAt',
-    headerName: 'Last modified',
+    headerName: columnStrings.updatedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);
@@ -92,22 +98,22 @@ const columns = [
 
 const scopes = [
   {
-    label: 'Default',
+    label: tabs.default,
     key: 'manageVisible',
     hidden: ['deletedAt']
   },
   {
-    label: 'Pending',
+    label: tabs.pending,
     key: 'managePending',
     hidden: ['deletedAt']
   },
   {
-    label: 'Rejected',
+    label: tabs.rejected,
     key: 'manageRejected',
     hidden: ['deletedAt']
   },
   {
-    label: 'Deleted',
+    label: tabs.deleted,
     key: 'manageDeleted',
     hidden: ['updatedAt']
   }

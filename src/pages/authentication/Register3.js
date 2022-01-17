@@ -16,7 +16,13 @@ import { statusEnum } from 'constants/approvalStatus';
 import { useQuery } from 'react-query';
 import { getAuthorProfile } from 'apis/profile';
 import AuthService from 'services/auth.service';
-// assets
+
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { auth: authStrings }
+} = strings;
 
 // ===============================|| AUTH3 - REGISTER ||=============================== //
 
@@ -45,7 +51,7 @@ const Register = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Become an author
+                            {authStrings.becomeAuthor}
                           </Typography>
                         </Stack>
                       </Grid>
@@ -53,26 +59,19 @@ const Register = () => {
                   </Grid>
                   {(() => {
                     if (profileAuthor.data?.approval_status === statusEnum.PENDING) {
-                      return (
-                        <Typography textAlign="center">
-                          You have registered to become an author, but was not approved yet, please wait
-                        </Typography>
-                      );
+                      return <Typography textAlign="center">{authStrings.pendingAuthor}</Typography>;
                     }
                     if (profileAuthor.data?.approval_status === statusEnum.APPROVED) {
                       return (
                         <div>
                           <div>
-                            <Typography textAlign="center">You have become an author!</Typography>
-                          </div>
-                          <div>
-                            <Typography textAlign="center">Please logout and login again!</Typography>
+                            <Typography textAlign="center">{authStrings.acceptedAuthor}</Typography>
                           </div>
                         </div>
                       );
                     }
                     if (profileAuthor.data?.approval_status === statusEnum.REJECTED) {
-                      return <Typography textAlign="center">Your request to become an author was rejected</Typography>;
+                      return <Typography textAlign="center">{authStrings.rejectedAuthor}</Typography>;
                     }
                     return (
                       <Grid item xs={12}>
@@ -87,7 +86,7 @@ const Register = () => {
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
                       <Button onClick={handleLogout} fullWidth>
-                        Logout
+                        {buttons.signout}
                       </Button>
                     </Grid>
                   </Grid>

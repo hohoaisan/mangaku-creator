@@ -30,8 +30,13 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 // services
 import AuthService from 'services/auth.service';
+import strings from 'constants/strings';
 
-// ============================|| FIREBASE - LOGIN ||============================ //
+const {
+  buttons,
+  pages: { auth: authStrings },
+  forms: { validations: validationStrings, labels }
+} = strings;
 
 const loginInitValue = {
   email: '',
@@ -39,8 +44,8 @@ const loginInitValue = {
 };
 
 const loginValidationSchema = Yup.object().shape({
-  email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-  password: Yup.string().max(255).required('Password is required')
+  email: Yup.string().email(validationStrings.emailValid).max(255).required(validationStrings.emailRequired),
+  password: Yup.string().max(255).required(validationStrings.passwordRequired)
 });
 
 const FirebaseLogin = ({ ...others }) => {
@@ -61,7 +66,7 @@ const FirebaseLogin = ({ ...others }) => {
       <Grid container direction="column" justifyContent="center" spacing={2}>
         <Grid item xs={12} container alignItems="center" justifyContent="center">
           <Box sx={{ mb: 2 }}>
-            <Typography variant="subtitle1">Sign in with Email address</Typography>
+            <Typography variant="subtitle1">{authStrings.singinWithEmail}</Typography>
           </Box>
         </Grid>
       </Grid>
@@ -89,7 +94,7 @@ const FirebaseLogin = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.email && errors.email)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-email-login">Email Address / Username</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-email-login">{labels.email}</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-email-login"
                 type="email"
@@ -97,7 +102,7 @@ const FirebaseLogin = ({ ...others }) => {
                 name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                label="Email Address / Username"
+                label={labels.email}
                 inputProps={{}}
               />
               {touched.email && errors.email && (
@@ -108,7 +113,7 @@ const FirebaseLogin = ({ ...others }) => {
             </FormControl>
 
             <FormControl fullWidth error={Boolean(touched.password && errors.password)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-password-login">Password</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-password-login">{labels.password}</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-password-login"
                 type={showPassword ? 'text' : 'password'}
@@ -129,7 +134,7 @@ const FirebaseLogin = ({ ...others }) => {
                     </IconButton>
                   </InputAdornment>
                 }
-                label="Password"
+                label={labels.password}
                 inputProps={{}}
               />
               {touched.password && errors.password && (
@@ -147,7 +152,7 @@ const FirebaseLogin = ({ ...others }) => {
             <Box sx={{ mt: 2 }}>
               <AnimateButton>
                 <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="secondary">
-                  Sign in
+                  {buttons.signin}
                 </Button>
               </AnimateButton>
             </Box>

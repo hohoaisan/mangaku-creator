@@ -1,16 +1,21 @@
 import { Chip } from '@mui/material';
 import { roleNames } from 'configs/roles';
+import strings from 'constants/strings';
 
+const {
+  common: { columns: columnStrings },
+  entities: { user: userStrings }
+} = strings;
 const columns = [
   {
     field: 'name',
-    headerName: 'Name',
+    headerName: userStrings.name,
     minWidth: 200,
     flex: 1
   },
   {
     field: 'role',
-    headerName: 'Role',
+    headerName: userStrings.role,
     minWidth: 120,
     flex: 1,
     renderCell: (rowParams) => {
@@ -22,27 +27,30 @@ const columns = [
   },
   {
     field: 'email',
-    headerName: 'Email',
+    headerName: userStrings.email,
     minWidth: 200,
     flex: 1.5
   },
   {
     field: 'emailVerified',
-    headerName: 'Verifed',
+    headerName: userStrings.emailVerified,
     width: 120,
     renderCell: (rowParams) =>
-      rowParams.value ? <Chip color="success" label="Verified" size="small" /> : <Chip color="error" label="Not verified" size="small" />
+      rowParams.value ? (
+        <Chip color="success" label={userStrings.verified} size="small" />
+      ) : (
+        <Chip color="error" label={userStrings.notVerified} size="small" />
+      )
   },
   {
     field: 'banned',
-    headerName: 'Banned',
+    headerName: userStrings.banned,
     width: 120,
-    renderCell: (rowParams) =>
-      rowParams.value ? <Chip color="error" label="Banned" size="small" /> : <Chip color="success" label="Normal" size="small" />
+    renderCell: (rowParams) => (rowParams.value ? <Chip color="error" label={userStrings.banned} size="small" /> : '')
   },
   {
     field: 'createdAt',
-    headerName: 'Created at',
+    headerName: columnStrings.createdAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);
@@ -53,7 +61,7 @@ const columns = [
   },
   {
     field: 'deletedAt',
-    headerName: 'Deleted at',
+    headerName: columnStrings.deletedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       if (params.value) {
@@ -66,7 +74,7 @@ const columns = [
   },
   {
     field: 'updatedAt',
-    headerName: 'Last modified',
+    headerName: columnStrings.updatedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);

@@ -26,15 +26,22 @@ import Search from 'ui-component/Search';
 
 import columns from './columns';
 import useSearchParams from 'hooks/useSearchParams';
+import strings from 'constants/strings';
+
+const {
+  pages: { user: userPageStrings },
+  buttons,
+  common: { tabs }
+} = strings;
 
 const scopes = [
   {
-    label: 'Default',
+    label: tabs.default,
     key: 'visible',
     hidden: ['deletedAt']
   },
   {
-    label: 'Deleted',
+    label: tabs.deleted,
     key: 'deleted',
     hidden: ['updatedAt']
   }
@@ -150,10 +157,10 @@ const ManageUsers = () => {
   if (usersQuery.isLoading) {
     return <Spinner />;
   }
-  console.log(queries);
+
   return (
     <MainCard
-      title="Manage Users"
+      title={userPageStrings.manage}
       secondary={
         <Box display="flex">
           <Search key="search" name="search" onSubmit={handleSearchSubmit} initialValue={queries.search} />
@@ -161,7 +168,7 @@ const ManageUsers = () => {
             <RefreshIcon />
           </IconButton>
           <Button key="create" variant="contained" onClick={() => handleOpenModal('create')}>
-            Create
+            {buttons.create}
           </Button>
         </Box>
       }

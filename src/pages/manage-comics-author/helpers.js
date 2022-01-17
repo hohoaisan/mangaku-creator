@@ -1,9 +1,14 @@
+import strings from 'constants/strings';
 import pick from 'utils/pick';
 import * as Yup from 'yup';
 
+const {
+  forms: { validations }
+} = strings;
+
 export const createSchema = Yup.object().shape({
-  title: Yup.string().max(255).required('Title is required'),
-  description: Yup.string().max(5000).required('Description is required'),
+  title: Yup.string().max(255).required(validations.titleRequired),
+  description: Yup.string().max(5000).required(validations.descriptionRequired),
   genres: Yup.array()
     .of(
       Yup.object().shape({
@@ -11,7 +16,7 @@ export const createSchema = Yup.object().shape({
         name: Yup.string()
       })
     )
-    .min(1, 'Genre is required'),
+    .min(1, validations.genreRequired),
   formats: Yup.array()
     .of(
       Yup.object().shape({
@@ -19,7 +24,7 @@ export const createSchema = Yup.object().shape({
         name: Yup.string()
       })
     )
-    .min(1, 'Format is required'),
+    .min(1, validations.formatRequired),
   covers: Yup.array()
     .of(
       Yup.object().shape({
@@ -28,17 +33,17 @@ export const createSchema = Yup.object().shape({
         default: Yup.boolean()
       })
     )
-    .min(1, 'Cover image is required')
+    .min(1, validations.coverImageRequired)
     .test({
       name: 'one-true',
-      message: 'A default cover is required',
+      message: validations.defaultCoverRequired,
       test: (arr) => !arr.every((value) => value.default === false)
     })
 });
 
 export const createChapterSchema = Yup.object().shape({
-  number: Yup.number().min(0).required('Chapter number is required'),
-  name: Yup.string().max(255).required('Chapter name is required'),
+  number: Yup.number().min(0).required(validations.chapNumberRequired),
+  name: Yup.string().max(255).required(validations.nameRequired),
   volume: Yup.number().min(0),
   pages: Yup.array()
     .of(
@@ -47,7 +52,7 @@ export const createChapterSchema = Yup.object().shape({
         url: Yup.string()
       })
     )
-    .min(1, 'Chapter pages is required')
+    .min(1, validations.chapPagesRequired)
 });
 
 export const formatComicFormData = (values) => {

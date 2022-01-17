@@ -26,15 +26,22 @@ import Search from 'ui-component/Search';
 
 import columns from './columns';
 import useSearchParams from 'hooks/useSearchParams';
+import strings from 'constants/strings';
+
+const {
+  common: { tabs: tabStrings },
+  pages: { author: authorPageStrings },
+  buttons
+} = strings;
 
 const scopes = [
   {
-    label: 'Default',
+    label: tabStrings.default,
     key: 'visible',
     hidden: ['deletedAt']
   },
   {
-    label: 'Deleted',
+    label: tabStrings.deleted,
     key: 'deleted',
     hidden: ['updatedAt']
   }
@@ -153,7 +160,7 @@ const ManageAuthors = () => {
   console.log(queries);
   return (
     <MainCard
-      title="Manage Authors"
+      title={authorPageStrings.manage}
       secondary={
         <Box display="flex">
           <Search key="search" name="search" onSubmit={handleSearchSubmit} initialValue={queries.search} />
@@ -161,7 +168,7 @@ const ManageAuthors = () => {
             <RefreshIcon />
           </IconButton>
           <Button key="create" variant="contained" onClick={() => handleOpenModal('create')}>
-            Create
+            {buttons.create}
           </Button>
         </Box>
       }

@@ -1,3 +1,7 @@
+const { default: strings } = require('constants/strings');
+
+const { roles: roleStrings } = strings;
+
 const enumRoles = {
   USER: 'user',
   ADMIN: 'admin',
@@ -13,10 +17,10 @@ const allRoles = {
 };
 
 const roleNames = {
-  [enumRoles.USER]: 'Regular user',
-  [enumRoles.ADMIN]: 'Administrator',
-  [enumRoles.AUTHOR]: 'Author',
-  [enumRoles.MOD]: 'Moderator'
+  [enumRoles.USER]: roleStrings.USER,
+  [enumRoles.ADMIN]: roleStrings.ADMIN,
+  [enumRoles.AUTHOR]: roleStrings.AUTHOR,
+  [enumRoles.MOD]: roleStrings.MOD
 };
 
 const roles = Object.keys(allRoles);

@@ -7,6 +7,12 @@ import PropsType from 'prop-types';
 import ApprovalStatus from './ApprovalStatus';
 import { statusEnum } from 'constants/approvalStatus';
 
+import strings from 'constants/strings';
+
+const {
+  entities: { comic: comicStrings }
+} = strings;
+
 const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
@@ -100,7 +106,7 @@ const ComicManageCard = ({
           </Typography>
           <Stack direction="row" mb={0.1}>
             <Typography variant="caption" fontWeight="bold" mr={1}>
-              Author(s):
+              {comicStrings.authors}:
             </Typography>
             <Typography variant="caption" className={classes.author}>
               {authors?.length && authors.map(({ name }, index) => `${name}${index === authors.length - 1 ? '' : ', '}`)}
@@ -108,20 +114,20 @@ const ComicManageCard = ({
           </Stack>
           <Stack direction="row" mb={0.1} flexWrap="wrap">
             <Typography variant="caption" fontWeight="bold" mr={1}>
-              Approval:
+              {comicStrings.approval}:
             </Typography>
             <ApprovalStatus approval={approval} />
           </Stack>
           <Stack direction="row" mb={0.1} flexWrap="wrap">
             <Stack direction="row" mr={2} flexWrap="wrap">
               <Typography variant="caption" fontWeight="bold" mr={1}>
-                Rating:
+                {comicStrings.ratings}:
               </Typography>
               <Typography variant="caption">{rating || 'N/A'}</Typography>
             </Stack>
             <Stack direction="row" mb={0.1} flexWrap="wrap">
               <Typography variant="caption" fontWeight="bold" mr={1}>
-                Favorite(s):
+                {comicStrings.favorites}:
               </Typography>
               <Typography variant="caption">{numFavorites || 'N/A'}</Typography>
             </Stack>
@@ -130,7 +136,7 @@ const ComicManageCard = ({
             {deletedAt ? (
               <Stack direction="row" flexWrap="wrap">
                 <Typography variant="caption" fontWeight="bold" mr={1}>
-                  Deleted at
+                  {comicStrings.deletedAt}:
                 </Typography>
                 <Typography variant="caption">
                   {`${new Date(deletedAt).toLocaleTimeString()} ${new Date(deletedAt).toLocaleDateString()}`}
@@ -141,7 +147,7 @@ const ComicManageCard = ({
                 {createdAt && (
                   <Stack direction="row" mr={2} flexWrap="wrap">
                     <Typography variant="caption" fontWeight="bold" mr={1}>
-                      Created at
+                      {comicStrings.createdAt}:
                     </Typography>
                     <Typography variant="caption">{new Date(createdAt).toLocaleDateString()}</Typography>
                   </Stack>
@@ -149,7 +155,7 @@ const ComicManageCard = ({
                 {updatedAt && updatedAt !== createdAt && (
                   <Stack direction="row" mr={2} flexWrap="wrap">
                     <Typography variant="caption" fontWeight="bold" mr={1}>
-                      Updated at
+                      {comicStrings.updatedAt}
                     </Typography>
                     <Typography variant="caption">{new Date(updatedAt).toLocaleDateString()}</Typography>
                   </Stack>

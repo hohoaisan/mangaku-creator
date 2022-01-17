@@ -12,6 +12,12 @@ import CreateGenre from './CreateFormat';
 // react query
 import queryClient from 'query';
 import { GENRES } from 'query/queryKeys';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { format: formatPageStrings }
+} = strings;
 
 const ManageGenres = () => {
   const [searchQuery, setSearchQuery] = React.useState(null);
@@ -32,7 +38,7 @@ const ManageGenres = () => {
   const handleSearchSubmit = (value) => setSearchQuery(value);
   return (
     <MainCard
-      title="Manage Formats"
+      title={formatPageStrings.manage}
       secondary={
         <Box display="flex">
           <Search key="search" name="search" onSubmit={handleSearchSubmit} />
@@ -40,7 +46,7 @@ const ManageGenres = () => {
             <RefreshIcon />
           </IconButton>
           <Button key="create" variant="contained" onClick={handleCreateClickOpen}>
-            Create
+            {buttons.create}
           </Button>
         </Box>
       }

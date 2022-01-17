@@ -1,6 +1,9 @@
 // assets
 import { IconNote, IconNotebook, IconNotes, IconUsers } from '@tabler/icons';
 
+import strings from 'constants/strings';
+
+const { menus: menuStrings } = strings;
 // constant
 const icons = {
   IconNote,
@@ -13,12 +16,12 @@ const icons = {
 
 const pages = {
   id: 'comic',
-  title: 'Manage Comics',
+  title: menuStrings.comic,
   type: 'group',
   children: [
     {
       id: 'comics',
-      title: 'Comics',
+      title: menuStrings.manageComic,
       type: 'item',
       icon: icons.IconNotes,
       url: '/comics',
@@ -26,7 +29,7 @@ const pages = {
     },
     {
       id: 'comic_authors',
-      title: 'Authors',
+      title: menuStrings.manageAuthor,
       type: 'item',
       icon: icons.IconUsers,
       url: '/authors',
@@ -35,7 +38,7 @@ const pages = {
     },
     {
       id: 'comic_format',
-      title: 'Formats',
+      title: menuStrings.manageFormat,
       type: 'item',
       icon: icons.IconNote,
       url: '/formats',
@@ -44,7 +47,7 @@ const pages = {
     },
     {
       id: 'comic_genres',
-      title: 'Genres',
+      title: menuStrings.manageGenre,
       type: 'item',
       icon: icons.IconNote,
       url: '/genres',

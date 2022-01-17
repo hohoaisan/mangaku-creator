@@ -15,6 +15,13 @@ import ToastService from 'services/toast.service';
 
 // formik
 import { useFormik } from 'formik';
+import strings from 'constants/strings';
+
+const {
+  pages: { author: authorPageStrings },
+  buttons,
+  forms: { validations, labels }
+} = strings;
 
 const initialValues = {
   name: '',
@@ -22,7 +29,7 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().max(255).required('Name is required'),
+  name: Yup.string().max(255).required(validations.nameRequired),
   description: Yup.string().max(255)
 });
 
@@ -30,7 +37,7 @@ const forms = [
   {
     name: 'name',
     options: {
-      label: 'Author name',
+      label: labels.authorName,
       autoFocus: true,
       required: true
     }
@@ -38,7 +45,7 @@ const forms = [
   {
     name: 'description',
     options: {
-      label: 'Author desciption',
+      label: labels.authorDescription,
       multiline: true,
       required: false,
       rows: 3
@@ -52,7 +59,7 @@ const CreateAuthor = ({ open, onClose } = {}) => {
       setSubmitting(true);
       await createAuthor(newAuthor);
       queryClient.invalidateQueries(AUTHORS);
-      ToastService.success('Author created');
+      ToastService.success(authorPageStrings.mutations.createSuccess);
       resetForm();
     } catch (err) {
       let message = err.message;
@@ -71,7 +78,7 @@ const CreateAuthor = ({ open, onClose } = {}) => {
   });
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Create author</DialogTitle>
+      <DialogTitle>{authorPageStrings.create}</DialogTitle>
       <DialogContent>
         {forms.map(({ name, options }) => (
           <FormControl key={name} fullWidth error={Boolean(touched[name] && errors[name])}>
@@ -94,10 +101,10 @@ const CreateAuthor = ({ open, onClose } = {}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>
-          Close
+          {buttons.close}
         </Button>
         <Button onClick={handleSubmit} disabled={isSubmitting}>
-          Create
+          {buttons.create}
         </Button>
       </DialogActions>
     </Dialog>

@@ -12,13 +12,26 @@ import { deleteGenre } from 'apis/genre';
 // toast
 import ToastService from 'services/toast.service';
 
+import strings from 'constants/strings';
+import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+
+const {
+  buttons,
+  pages: { genre: genrePageStrings }
+} = strings;
+
 const DeleteGenre = ({ open, onClose, selectedItem }) => {
   const mutation = useMutation(deleteGenre, {
     onMutate: async () => {},
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Deleted genre ${selectedItem.name}`);
+      ToastService.success(`${genrePageStrings.mutations.deleteSuccess} ${selectedItem.name}`);
     },
+    onError: (err) => {
+      const message = getAPIErrorMessage(err);
+      ToastService.error(message);
+    },
+
     onSettled: () => {
       queryClient.invalidateQueries(GENRES);
       onClose();
@@ -29,14 +42,16 @@ const DeleteGenre = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={mutation.isLoading ? undefined : onClose} disableEscapeKeyDown>
-      <DialogTitle>Delete genre</DialogTitle>
-      <DialogContent>Are you sure want to delete this genre &quot;{selectedItem.name}&quot;</DialogContent>
+      <DialogTitle>{genrePageStrings.delete}</DialogTitle>
+      <DialogContent>
+        {genrePageStrings.prompt.deleteAuthor} &quot;{selectedItem.name}&quot;
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

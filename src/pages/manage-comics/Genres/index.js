@@ -13,6 +13,13 @@ import CreateGenre from './CreateGenre';
 import queryClient from 'query';
 import { GENRES } from 'query/queryKeys';
 
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { genre: genrePageStrings }
+} = strings;
+
 const ManageGenres = () => {
   const [searchQuery, setSearchQuery] = React.useState(null);
 
@@ -32,7 +39,7 @@ const ManageGenres = () => {
   const handleSearchSubmit = (value) => setSearchQuery(value);
   return (
     <MainCard
-      title="Manage genres"
+      title={genrePageStrings.manage}
       secondary={
         <Box display="flex">
           <Search key="search" name="search" onSubmit={handleSearchSubmit} />
@@ -40,7 +47,7 @@ const ManageGenres = () => {
             <RefreshIcon />
           </IconButton>
           <Button key="create" variant="contained" onClick={handleCreateClickOpen}>
-            Create
+            {buttons.create}
           </Button>
         </Box>
       }

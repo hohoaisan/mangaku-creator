@@ -1,25 +1,31 @@
+import strings from 'constants/strings';
+
+const {
+  common: { columns: columnStrings }
+} = strings;
+
 const columns = [
   {
     field: 'key',
-    headerName: 'Unique key',
+    headerName: columnStrings.uniqueKey,
     minWidth: 100,
     flex: 1
   },
   {
     field: 'name',
-    headerName: 'Name',
+    headerName: columnStrings.name,
     minWidth: 200,
     flex: 1
   },
   {
     field: 'description',
-    headerName: 'Description',
+    headerName: columnStrings.description,
     minWidth: 300,
     flex: 2
   },
   {
     field: 'createdAt',
-    headerName: 'Created at',
+    headerName: columnStrings.createdAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);
@@ -30,7 +36,7 @@ const columns = [
   },
   {
     field: 'updatedAt',
-    headerName: 'Last modified',
+    headerName: columnStrings.updatedAt,
     type: 'dateTime',
     valueFormatter: (params) => {
       const date = new Date(params.value);

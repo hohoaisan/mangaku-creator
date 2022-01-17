@@ -26,26 +26,33 @@ import ComicManageCard from 'ui-component/ComicManageCard';
 // import columns from './columns';
 import useSearchParams from 'hooks/useSearchParams';
 import resolveImgUrl from 'utils/resolveImageUrl';
+import strings from 'constants/strings';
+
+const {
+  common: { tabs },
+  buttons,
+  pages: { comic: comicPageStrings }
+} = strings;
 
 const scopes = [
   {
-    label: 'Default',
+    label: tabs.default,
     key: 'manageVisible'
   },
   {
-    label: 'Pending',
+    label: tabs.pending,
     key: 'managePending'
   },
   {
-    label: 'Approved',
+    label: tabs.approved,
     key: 'manageApproved'
   },
   {
-    label: 'Rejected',
+    label: tabs.rejected,
     key: 'manageRejected'
   },
   {
-    label: 'Deleted',
+    label: tabs.deleted,
     key: 'manageDeleted'
   }
 ];
@@ -119,7 +126,7 @@ const ManageComics = () => {
   }
   return (
     <MainCard
-      title="Manage Comics"
+      title={comicPageStrings.mangage}
       secondary={
         <Box display="flex">
           <Search key="search" name="search" onSubmit={handleSearchSubmit} initialValue={queries.search} />
@@ -127,7 +134,7 @@ const ManageComics = () => {
             <RefreshIcon />
           </IconButton>
           <Button key="create" variant="contained" to="/comics/create" LinkComponent={Link}>
-            Create
+            {buttons.create}
           </Button>
         </Box>
       }

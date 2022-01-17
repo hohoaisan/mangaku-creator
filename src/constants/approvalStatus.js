@@ -1,3 +1,9 @@
+const { default: strings } = require('./strings');
+
+const {
+  common: { approvalStatus }
+} = strings;
+
 const statusEnum = {
   PENDING: 'pending',
   APPROVED: 'approved',
@@ -5,9 +11,9 @@ const statusEnum = {
 };
 
 const allStatus = {
-  [statusEnum.PENDING]: 'Pending',
-  [statusEnum.APPROVED]: 'Approved',
-  [statusEnum.REJECTED]: 'Rejected'
+  [statusEnum.PENDING]: approvalStatus.pending,
+  [statusEnum.APPROVED]: approvalStatus.approved,
+  [statusEnum.REJECTED]: approvalStatus.rejected
 };
 
 const statusOptions = [

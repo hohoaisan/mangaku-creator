@@ -13,6 +13,12 @@ import { restoreChapter } from 'apis/chapter';
 // toast
 import ToastService from 'services/toast.service';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { chapter: chapterPageStrings }
+} = strings;
 
 const RestoreChapter = ({ open, onClose, selectedItem }) => {
   const { comicId } = useParams();
@@ -21,11 +27,11 @@ const RestoreChapter = ({ open, onClose, selectedItem }) => {
     onError: async (err) => {
       ToastService.destroyAll();
       const message = getAPIErrorMessage(err);
-      ToastService.error(`Unable to restore chapter ${selectedItem.name}, reason: ${message}`);
+      ToastService.error(`${chapterPageStrings.mutations.restoreFailed} ${selectedItem.name}, reason: ${message}`);
     },
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Restored chapter ${selectedItem.name}`);
+      ToastService.success(`${chapterPageStrings.mutations.restoreSuccess} ${selectedItem.name}`);
     },
     onSettled: () => {
       queryClient.invalidateQueries(CHAPTERS);
@@ -37,16 +43,16 @@ const RestoreChapter = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Restore Chapter</DialogTitle>
+      <DialogTitle>{chapterPageStrings.restore}</DialogTitle>
       <DialogContent>
-        Are you sure want to restore this chapter {selectedItem.number} - &quot;{selectedItem.name}&quot;
+        {chapterPageStrings.prompt.restoreChapter} {selectedItem.number} - &quot;{selectedItem.name}&quot;
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

@@ -12,18 +12,24 @@ import { deleteUser } from 'apis/user';
 // toast
 import ToastService from 'services/toast.service';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { user: userPageStrings }
+} = strings;
 
 const DeleteUser = ({ open, onClose, selectedItem }) => {
   const mutation = useMutation(deleteUser, {
     onMutate: async () => {},
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Deleted user ${selectedItem.name}`);
+      ToastService.success(`${userPageStrings.mutations.deleteSuccess} ${selectedItem.name}`);
     },
     onError: async (err) => {
       ToastService.destroyAll();
       const message = getAPIErrorMessage(err);
-      ToastService.success(`Unable to delete user ${selectedItem.name}, reason: ${message}`);
+      ToastService.success(`${userPageStrings.mutations.deleteFailed} ${selectedItem.name}, reason: ${message}`);
     },
     onSettled: () => {
       queryClient.invalidateQueries(USERS);
@@ -35,14 +41,16 @@ const DeleteUser = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Delete Author</DialogTitle>
-      <DialogContent>Are you sure want to delete this user &quot;{selectedItem.name}&quot;</DialogContent>
+      <DialogTitle>{userPageStrings.delete}</DialogTitle>
+      <DialogContent>
+        {userPageStrings.prompt.deleteUser} &quot;{selectedItem.name}&quot;
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

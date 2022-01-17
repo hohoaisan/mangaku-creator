@@ -11,13 +11,19 @@ import { deleteComic } from 'apis/comic';
 
 // toast
 import ToastService from 'services/toast.service';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { comic: comicPageStrings }
+} = strings;
 
 const DeleteComic = ({ open, onClose, selectedItem }) => {
   const mutation = useMutation(deleteComic, {
     onMutate: async () => {},
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Deleted comic ${selectedItem.name}`);
+      ToastService.success(`${comicPageStrings.mutations.deleteSuccess} ${selectedItem.name}`);
     },
     onSettled: () => {
       queryClient.invalidateQueries(COMICS);
@@ -29,14 +35,16 @@ const DeleteComic = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Delete Comic</DialogTitle>
-      <DialogContent>Are you sure want to delete this comic &quot;{selectedItem.name}&quot;</DialogContent>
+      <DialogTitle>{comicPageStrings.delete}</DialogTitle>
+      <DialogContent>
+        {comicPageStrings.prompt.deleteComic} &quot;{selectedItem.name}&quot;
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

@@ -17,6 +17,13 @@ import { getFormat, updateFormat } from 'apis/format';
 // formik
 import { useFormik } from 'formik';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  forms: { labels },
+  pages: { format: formatPageStrings }
+} = strings;
 
 const initialValues = {
   key: '',
@@ -34,7 +41,7 @@ const forms = [
   {
     name: 'name',
     options: {
-      label: 'Format name',
+      label: labels.name,
       autoFocus: true,
       required: false
     }
@@ -42,14 +49,14 @@ const forms = [
   {
     name: 'key',
     options: {
-      label: 'Format key',
+      label: labels.key,
       required: false
     }
   },
   {
     name: 'description',
     options: {
-      label: 'Format desciption',
+      label: labels.description,
       multiline: true,
       rows: 3,
       required: false
@@ -68,7 +75,7 @@ const UpdateFormat = ({ open, onClose, selectedItem } = {}) => {
       await updateFormat(values);
       queryClient.invalidateQueries([FORMAT, selectedItem.id]);
       queryClient.invalidateQueries(FORMATS);
-      ToastService.success('Format updated');
+      ToastService.success(formatPageStrings.mutations.updateSuccess);
     } catch (err) {
       const message = getAPIErrorMessage(err);
       ToastService.error(message);
@@ -92,7 +99,7 @@ const UpdateFormat = ({ open, onClose, selectedItem } = {}) => {
   }, [query.isSuccess, query.data]);
   return (
     <Dialog open={open} onClose={!isSubmitting && onClose} disableEscapeKeyDown>
-      <DialogTitle>Update format</DialogTitle>
+      <DialogTitle>{formatPageStrings.update}</DialogTitle>
       <DialogContent>
         {forms.map(({ name, options }) => (
           <FormControl key={name} fullWidth error={Boolean(touched[name] && errors[name])}>
@@ -116,10 +123,10 @@ const UpdateFormat = ({ open, onClose, selectedItem } = {}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>
-          Close
+          {buttons.close}
         </Button>
         <Button onClick={handleSubmit} disabled={isSubmitting || query.isFetching || query.isError}>
-          Update
+          {buttons.update}
         </Button>
       </DialogActions>
     </Dialog>

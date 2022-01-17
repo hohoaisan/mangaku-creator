@@ -1,26 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  Grid,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+import { Box, Button, FormControl, FormHelperText, InputLabel, OutlinedInput } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
@@ -31,11 +13,18 @@ import { becomeAuthorRegister } from 'apis/profile';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 import queryClient from 'query';
 
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  pages: { auth: authStrings },
+  forms: { validations: validationStrings, labels }
+} = strings;
 // ===========================|| FIREBASE - REGISTER ||=========================== //
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().max(100).required('Name is required'),
-  description: Yup.string().max(255).required('Description is required')
+  name: Yup.string().max(100).required(validationStrings.nameRequired),
+  description: Yup.string().max(255).required(validationStrings.descriptionRequired)
 });
 
 const FirebaseRegister = ({ ...others }) => {
@@ -67,7 +56,7 @@ const FirebaseRegister = ({ ...others }) => {
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit} {...others}>
             <FormControl fullWidth error={Boolean(touched.name && errors.name)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-name-register">Your author name</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-name-register">{labels.authorName}</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-name-register"
                 type="name"
@@ -83,7 +72,7 @@ const FirebaseRegister = ({ ...others }) => {
               )}
             </FormControl>
             <FormControl fullWidth error={Boolean(touched.description && errors.description)} sx={{ ...theme.typography.customInput }}>
-              <InputLabel htmlFor="outlined-adornment-description-register">Description</InputLabel>
+              <InputLabel htmlFor="outlined-adornment-description-register">{labels.authorDescription}</InputLabel>
               <OutlinedInput
                 id="outlined-adornment-description-register"
                 type="description"
@@ -116,7 +105,7 @@ const FirebaseRegister = ({ ...others }) => {
                   variant="contained"
                   color="secondary"
                 >
-                  Procceed to register
+                  {buttons.register}
                 </Button>
               </AnimateButton>
             </Box>

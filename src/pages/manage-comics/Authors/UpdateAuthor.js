@@ -33,9 +33,15 @@ import { getAuthor, updateAuthor } from 'apis/author';
 import { useFormik } from 'formik';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 import { statusOptions } from 'constants/approvalStatus';
+import strings from 'constants/strings';
+
+const {
+  pages: { author: authorPageStrings },
+  buttons,
+  forms: { labels }
+} = strings;
 
 const initialValues = {
-  key: '',
   name: '',
   description: '',
   approval_status: null,
@@ -43,7 +49,6 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  key: Yup.string().max(20),
   name: Yup.string().max(255),
   description: Yup.string().max(255),
   restrict: Yup.boolean()
@@ -60,7 +65,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
       await updateAuthor(values);
       queryClient.invalidateQueries([AUTHOR, selectedItem.id]);
       queryClient.invalidateQueries(AUTHORS);
-      ToastService.success('Author updated');
+      ToastService.success(authorPageStrings.mutations.updateSuccess);
     } catch (err) {
       const message = getAPIErrorMessage(err);
       ToastService.error(message);
@@ -84,7 +89,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
   }, [query.isSuccess, query.data]);
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Update author</DialogTitle>
+      <DialogTitle>{authorPageStrings.update}</DialogTitle>
       <DialogContent>
         <FormControl fullWidth error={Boolean(touched.name && errors.name)}>
           <TextField
@@ -94,7 +99,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
             type="text"
             fullWidth
             variant="outlined"
-            label="Author name"
+            label={labels.authorName}
             autoFocus
             required={false}
             margin="dense"
@@ -112,7 +117,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
             type="text"
             fullWidth
             variant="outlined"
-            label="Author description"
+            label={labels.authorDescription}
             autoFocus
             multiline
             required={false}
@@ -128,7 +133,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
             <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
               <InputLabel>Approval Status</InputLabel>
               <Select
-                label="Approval Status"
+                label={labels.approvalStatus}
                 value={values.approval_status}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -152,7 +157,7 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 disabled={query.isFetching}
-                label="Restrict"
+                label={labels.restrict}
               />
             </FormControl>
           </Box>
@@ -160,10 +165,10 @@ const UpdateAuthor = ({ open, onClose, selectedItem } = {}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>
-          Close
+          {buttons.close}
         </Button>
         <Button onClick={handleSubmit} disabled={isSubmitting || query.isFetching || query.isError}>
-          Update
+          {buttons.update}
         </Button>
       </DialogActions>
     </Dialog>

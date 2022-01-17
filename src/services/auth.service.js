@@ -6,7 +6,9 @@ import ToastService from './toast.service';
 import * as authAPI from 'apis/auth';
 import * as profileAPI from 'apis/profile';
 import httpStatus from 'http-status';
+import strings from 'constants/strings';
 
+const { toast: toastStrings, errors } = strings;
 class AuthService {
   static init() {
     const accessToken = TokenService.getAccessToken();
@@ -23,7 +25,7 @@ class AuthService {
       })
       .catch((err) => {
         if (err.response?.status === httpStatus.INTERNAL_SERVER_ERROR) {
-          ToastService.error('Server error');
+          ToastService.error(errors.server);
           return;
         }
         if (err.response) {
@@ -42,7 +44,7 @@ class AuthService {
       const accessToken = tokens.access.token;
       const refreshToken = tokens.refresh.token;
       store.dispatch(AuthSlice.loginSuccess(user));
-      ToastService.success('Logged in');
+      ToastService.success(toastStrings.signedin);
       TokenService.updateTokens({ accessToken, refreshToken });
     } catch (err) {
       store.dispatch(AuthSlice.loginFailed());
@@ -66,8 +68,8 @@ class AuthService {
       ToastService.destroyAll();
       TokenService.clearTokens();
       if (tokenExpired) {
-        ToastService.success('Token expired, Logged out');
-      } else ToastService.success('Logged out');
+        ToastService.success(toastStrings.expireSignOut);
+      } else ToastService.success(toastStrings.signOut);
       window.location.href = '/login';
     }
     return Promise.resolve();

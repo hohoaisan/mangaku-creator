@@ -32,6 +32,15 @@ import { getUser, updateUser } from 'apis/user';
 import { useFormik } from 'formik';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 import { selectableRoles, enumRoles, roleNames } from 'configs/roles';
+import strings from 'constants/strings';
+
+const {
+  buttons,
+  forms: { labels, validations },
+  pages: { user: userPageStrings },
+  common: { columns: columnStrings },
+  entities: { user: userStrings }
+} = strings;
 
 const initialValues = {
   name: '',
@@ -61,7 +70,7 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
       await updateUser(values);
       queryClient.invalidateQueries([USER, selectedItem.id]);
       queryClient.invalidateQueries(USERS);
-      ToastService.success('User updated');
+      ToastService.success(userPageStrings.mutations.updateSuccess);
     } catch (err) {
       const message = getAPIErrorMessage(err);
       ToastService.error(message);
@@ -95,7 +104,7 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
             type="text"
             fullWidth
             variant="outlined"
-            label="User name"
+            label={userStrings.name}
             autoFocus
             required={false}
             margin="dense"
@@ -113,7 +122,7 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
             type="text"
             fullWidth
             variant="outlined"
-            label="User email"
+            label={userStrings.email}
             autoFocus
             required={false}
             margin="dense"
@@ -131,7 +140,7 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
             type="password"
             fullWidth
             variant="outlined"
-            label="User password"
+            label={userStrings.password}
             autoFocus
             required={false}
             margin="dense"
@@ -150,7 +159,7 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
             onBlur={handleBlur}
             onChange={handleChange}
             disabled={query.isFetching}
-            label="Restrict"
+            label={userStrings.restrict}
           />
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.emailVerified && errors.emailVerified)}>
@@ -162,12 +171,12 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
             onBlur={handleBlur}
             onChange={handleChange}
             disabled={query.isFetching}
-            label="Email verified"
+            label={userStrings.emailVerified}
           />
         </FormControl>
 
         <FormControl fullWidth error={Boolean(touched.role && errors.role)} required>
-          <FormLabel>Role</FormLabel>
+          <FormLabel>{userStrings.role}</FormLabel>
           <Select
             value={values.role}
             onChange={handleChange}
@@ -191,10 +200,10 @@ const UpdateUser = ({ open, onClose, selectedItem } = {}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>
-          Close
+          {buttons.close}
         </Button>
         <Button onClick={handleSubmit} disabled={isSubmitting || query.isFetching || query.isError}>
-          Update
+          {buttons.update}
         </Button>
       </DialogActions>
     </Dialog>

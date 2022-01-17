@@ -26,8 +26,13 @@ import getAPIErrorMessage from 'utils/getAPIErrorMessage';
 import { useQuery } from 'react-query';
 import { COMIC } from 'query/queryKeys';
 import { getComic } from 'apis/comic';
+import strings from 'constants/strings';
 
-// ==============================|| SAMPLE PAGE ||============================== //
+const {
+  buttons,
+  entities: { comic: comicStrings },
+  pages: { comic: comicPageStrings }
+} = strings;
 
 const ComicDetail = () => {
   const { comicId } = useParams();
@@ -47,7 +52,7 @@ const ComicDetail = () => {
   const { title, description, cover, rating, numFavorites, authors, genres, formats } = comicQuery.data;
   return (
     <MainCard
-      title={`Comic ${comicQuery.data.title}`}
+      title={comicPageStrings.detail.replace('$title', comicQuery.data.title)}
       secondary={
         <Stack direction="row" spacing={1}>
           <IconButton onClick={refresh}>
@@ -86,7 +91,7 @@ const ComicDetail = () => {
             </Box>
             <Grid container alignItems="center" marginBottom={1}>
               <Grid item xs={12} sm={4} md={2} lg={1}>
-                <Typography fontWeight="bold">Rating</Typography>
+                <Typography fontWeight="bold">{comicStrings.ratings}</Typography>
               </Grid>
               <Grid item xs={12} sm={8} md={10} lg={11}>
                 <Typography fontWeight="bold">{rating ? <Rating rating={rating} /> : 'N/A'}</Typography>
@@ -94,7 +99,7 @@ const ComicDetail = () => {
             </Grid>
             <Grid container alignItems="center" marginBottom={1}>
               <Grid item xs={12} sm={4} md={2} lg={1}>
-                <Typography fontWeight="bold">Favorites</Typography>
+                <Typography fontWeight="bold">{comicStrings.favorites}</Typography>
               </Grid>
               <Grid item xs={12} sm={8} md={10} lg={11}>
                 <Typography fontWeight="bold">{numFavorites || 'N/A'}</Typography>
@@ -102,7 +107,7 @@ const ComicDetail = () => {
             </Grid>
             <Grid container alignItems="center" marginBottom={1}>
               <Grid item xs={12} sm={4} md={2} lg={1}>
-                <Typography fontWeight="bold">Authors</Typography>
+                <Typography fontWeight="bold">{comicStrings.authors}</Typography>
               </Grid>
               <Grid item xs={12} sm={8} md={10} lg={11}>
                 {authors && authors.length
@@ -116,7 +121,7 @@ const ComicDetail = () => {
             </Grid>
             <Grid container alignItems="center" marginBottom={1}>
               <Grid item xs={12} sm={4} md={2} lg={1}>
-                <Typography fontWeight="bold">Genres</Typography>
+                <Typography fontWeight="bold">{comicStrings.genres}</Typography>
               </Grid>
               <Grid item xs={12} sm={8} md={10} lg={11}>
                 {genres && genres.length
@@ -130,7 +135,7 @@ const ComicDetail = () => {
             </Grid>
             <Grid container alignItems="center" marginBottom={1}>
               <Grid item xs={12} sm={4} md={2} lg={1}>
-                <Typography fontWeight="bold">Formats</Typography>
+                <Typography fontWeight="bold">{comicStrings.formats}</Typography>
               </Grid>
               <Grid item xs={12} sm={8} md={10} lg={11}>
                 {formats && formats.length
@@ -143,7 +148,7 @@ const ComicDetail = () => {
               </Grid>
             </Grid>
             <Box>
-              <Typography fontWeight="bold">Description: </Typography>
+              <Typography fontWeight="bold">{comicStrings.description}:</Typography>
               <Typography>{description}</Typography>
             </Box>
           </Stack>
@@ -152,9 +157,9 @@ const ComicDetail = () => {
       <Box>
         <Box marginBottom={1}>
           <Stack direction="row" justifyContent="space-between">
-            <Typography variant="h2">Chapters</Typography>
+            <Typography variant="h2">{comicStrings.chapters}</Typography>
             <Button variant="outlined" onClick={() => navigate(`/comics/${comicId}/chapters/upload`)}>
-              Upload new chapter
+              {buttons.uploadNewChapter}
             </Button>
           </Stack>
         </Box>

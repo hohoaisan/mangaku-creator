@@ -51,8 +51,13 @@ import { updateComic, getComic } from 'apis/comic';
 import ToastService from 'services/toast.service';
 import pick from 'utils/pick';
 import { statusOptions } from 'constants/approvalStatus';
+import strings from 'constants/strings';
 
-// ==============================|| SAMPLE PAGE ||============================== //
+const {
+  buttons,
+  forms: { labels },
+  pages: { comic: comicPageStrings }
+} = strings;
 
 const initialValues = {
   title: '',
@@ -95,7 +100,7 @@ const UpdateComic = () => {
       const formValues = formatComicFormData(values);
       await updateComic(comicId, formValues);
       queryClient.invalidateQueries(COMICS);
-      ToastService.success('Comic updated');
+      ToastService.success(comicPageStrings.mutations.updateSuccess);
       comicQuery.refetch();
     } catch (err) {
       const message = getAPIErrorMessage(err);
@@ -169,21 +174,21 @@ const UpdateComic = () => {
 
   return (
     <MainCard
-      title="Update Comic"
+      title={comicPageStrings.update}
       secondary={
         <Stack direction="row" spacing={1}>
           <IconButton onClick={resetForm}>
             <RefreshIcon />
           </IconButton>
           <Button variant="contained" onClick={handleSubmit}>
-            Update
+            {buttons.update}
           </Button>
         </Stack>
       }
     >
       <Stack spacing={2} direction="column">
         <FormControl fullWidth error={Boolean(touched.title && errors.title)} required>
-          <FormLabel>Title</FormLabel>
+          <FormLabel>{labels.title}</FormLabel>
           <TextField
             required
             margin="dense"
@@ -191,7 +196,7 @@ const UpdateComic = () => {
             type="text"
             fullWidth
             variant="outlined"
-            title="Title"
+            title={labels.title}
             value={values.title}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -199,7 +204,7 @@ const UpdateComic = () => {
           {touched.title && errors.title && <FormHelperText error>{errors.title}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.description && errors.description)} required>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>{labels.description}</FormLabel>
           <TextField
             required
             margin="dense"
@@ -207,7 +212,7 @@ const UpdateComic = () => {
             type="text"
             fullWidth
             variant="outlined"
-            title="Description"
+            title={labels.description}
             value={values.description}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -218,7 +223,7 @@ const UpdateComic = () => {
         </FormControl>
         {values.approval_status !== null && (
           <FormControl fullWidth error={Boolean(touched.approval_status && errors.approval_status)} required>
-            <FormLabel>Approval Status</FormLabel>
+            <FormLabel>{labels.approval}</FormLabel>
             <Select value={values.approval_status} onChange={handleChange} onBlur={handleBlur} id="approval_status" name="approval_status">
               {statusOptions.map((option, index) => (
                 <MenuItem key={index} value={option.value}>
@@ -230,7 +235,7 @@ const UpdateComic = () => {
           </FormControl>
         )}
         <FormControl fullWidth error={Boolean(touched.authors && errors.authors)} required>
-          <FormLabel>Authors</FormLabel>
+          <FormLabel>{labels.author}</FormLabel>
           <Autocomplete
             multiple
             options={authorsQuery.data?.data}
@@ -252,7 +257,7 @@ const UpdateComic = () => {
           {touched.authors && errors.authors && <FormHelperText error>{errors.authors}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.genres && errors.genres)} required>
-          <FormLabel>Genres</FormLabel>
+          <FormLabel>{labels.genre}</FormLabel>
           <Autocomplete
             multiple
             options={genresQuery.data}
@@ -269,7 +274,7 @@ const UpdateComic = () => {
           {touched.genres && errors.genres && <FormHelperText error>{errors.genres}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.formats && errors.formats)} required>
-          <FormLabel>Formats</FormLabel>
+          <FormLabel>{labels.format}</FormLabel>
           <Autocomplete
             multiple
             options={formatsQuery.data}
@@ -286,7 +291,7 @@ const UpdateComic = () => {
           {touched.formats && errors.formats && <FormHelperText error>{errors.formats}</FormHelperText>}
         </FormControl>
         <FormControl fullWidth error={Boolean(touched.covers && errors.covers)} required>
-          <FormLabel>Covers</FormLabel>
+          <FormLabel>{labels.covers}</FormLabel>
           {touched.formats && errors.covers && <FormHelperText error>{errors.covers}</FormHelperText>}
           <Stack direction="row" flexWrap="wrap">
             {!!values?.covers?.length &&

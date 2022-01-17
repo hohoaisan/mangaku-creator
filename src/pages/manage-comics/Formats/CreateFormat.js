@@ -15,6 +15,14 @@ import ToastService from 'services/toast.service';
 
 // formik
 import { useFormik } from 'formik';
+import strings from 'constants/strings';
+import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+
+const {
+  buttons,
+  forms: { labels, validations },
+  pages: { format: formatPageStrings }
+} = strings;
 
 const initialValues = {
   key: '',
@@ -23,8 +31,8 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  key: Yup.string().max(20).required('Key is required'),
-  name: Yup.string().max(255).required('Name is required'),
+  key: Yup.string().max(20).required(validations.keyRequired),
+  name: Yup.string().max(255).required(validations.nameRequired),
   description: Yup.string().max(255)
 });
 
@@ -32,7 +40,7 @@ const forms = [
   {
     name: 'name',
     options: {
-      label: 'Format name',
+      label: labels.name,
       autoFocus: true,
       required: true
     }
@@ -40,14 +48,14 @@ const forms = [
   {
     name: 'key',
     options: {
-      label: 'Format key',
+      label: labels.key,
       required: true
     }
   },
   {
     name: 'description',
     options: {
-      label: 'Format desciption',
+      label: labels.description,
       multiline: true,
       required: false,
       rows: 3
@@ -61,13 +69,10 @@ const CreateFormat = ({ open, onClose } = {}) => {
       setSubmitting(true);
       await createFormat(newFormat);
       queryClient.invalidateQueries(FORMATS);
-      ToastService.success('Format created');
+      ToastService.success(formatPageStrings.mutations.createSuccess);
       resetForm();
     } catch (err) {
-      let message = err.message;
-      if (err.response?.data?.message) {
-        message = err.response.data.message;
-      }
+      const message = getAPIErrorMessage(err);
       ToastService.error(message);
     } finally {
       setSubmitting(false);
@@ -80,7 +85,7 @@ const CreateFormat = ({ open, onClose } = {}) => {
   });
   return (
     <Dialog open={open} onClose={!isSubmitting && onClose} disableEscapeKeyDown>
-      <DialogTitle>Create format</DialogTitle>
+      <DialogTitle>{formatPageStrings.create}</DialogTitle>
       <DialogContent>
         {forms.map(({ name, options }) => (
           <FormControl key={name} fullWidth error={Boolean(touched[name] && errors[name])}>
@@ -103,10 +108,10 @@ const CreateFormat = ({ open, onClose } = {}) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={isSubmitting}>
-          Close
+          {buttons.close}
         </Button>
         <Button onClick={handleSubmit} disabled={isSubmitting}>
-          Create
+          {buttons.create}
         </Button>
       </DialogActions>
     </Dialog>

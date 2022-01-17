@@ -49,8 +49,13 @@ import { COMIC, CHAPTER } from 'query/queryKeys';
 import { getAuthorComic } from 'apis/comicAuthor';
 import { getChapter, updateComicChapter } from 'apis/chapterAuthor';
 import ToastService from 'services/toast.service';
+import strings from 'constants/strings';
 
-// ==============================|| SAMPLE PAGE ||============================== //
+const {
+  buttons,
+  forms: { labels },
+  pages: { chapter: chapterPageStrings }
+} = strings;
 
 const initialValues = {
   number: 0,
@@ -76,7 +81,7 @@ const UpdateChapter = () => {
       console.log(formValues);
       await updateComicChapter(comicId, chapterId, formValues);
       queryClient.invalidateQueries(CHAPTER);
-      ToastService.success('Chapter updated');
+      ToastService.success(chapterPageStrings.mutations.updateSuccess);
     } catch (err) {
       const message = getAPIErrorMessage(err);
       ToastService.error(message);
@@ -158,14 +163,14 @@ const UpdateChapter = () => {
   return (
     <Container>
       <MainCard
-        title="Update chapter"
+        title={chapterPageStrings.update}
         secondary={
           <Stack direction="row" spacing={1}>
             <IconButton onClick={resetForm}>
               <RefreshIcon />
             </IconButton>
             <Button variant="contained" onClick={handleSubmit}>
-              Update
+              {buttons.update}
             </Button>
           </Stack>
         }
@@ -203,7 +208,7 @@ const UpdateChapter = () => {
           <Grid container spacing={1}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth error={Boolean(touched.number && errors.number)} required>
-                <FormLabel>Number</FormLabel>
+                <FormLabel>{labels.chapNumber}</FormLabel>
                 <TextField
                   required
                   margin="dense"
@@ -221,7 +226,7 @@ const UpdateChapter = () => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth error={Boolean(touched.volume && errors.volume)} required>
-                <FormLabel>Volume</FormLabel>
+                <FormLabel>{labels.volume}</FormLabel>
                 <TextField
                   required
                   margin="dense"
@@ -240,7 +245,7 @@ const UpdateChapter = () => {
           </Grid>
 
           <FormControl fullWidth error={Boolean(touched.name && errors.name)} required>
-            <FormLabel>Name</FormLabel>
+            <FormLabel>{labels.name}</FormLabel>
             <TextField
               required
               margin="dense"
@@ -257,7 +262,7 @@ const UpdateChapter = () => {
           </FormControl>
 
           <FormControl fullWidth error={Boolean(touched.pages && errors.pages)} required>
-            <FormLabel>Pages</FormLabel>
+            <FormLabel>{labels.pages}</FormLabel>
             {touched.formats && errors.pages && <FormHelperText error>{errors.pages}</FormHelperText>}
             <Stack
               direction="row"

@@ -12,6 +12,12 @@ import { restoreAuthor } from 'apis/author';
 // toast
 import ToastService from 'services/toast.service';
 import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+import strings from 'constants/strings';
+
+const {
+  pages: { author: authorPageStrings },
+  buttons
+} = strings;
 
 const RestoreAuthor = ({ open, onClose, selectedItem }) => {
   const mutation = useMutation(restoreAuthor, {
@@ -19,11 +25,11 @@ const RestoreAuthor = ({ open, onClose, selectedItem }) => {
     onError: async (err) => {
       ToastService.destroyAll();
       const message = getAPIErrorMessage(err);
-      ToastService.success(`Unable to restore author ${selectedItem.name}, reason: ${message}`);
+      ToastService.success(`${authorPageStrings.mutations.restoreFailed} ${selectedItem.name}, reason: ${message}`);
     },
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Restored author ${selectedItem.name}`);
+      ToastService.success(`${authorPageStrings.mutations.restoreSuccess} ${selectedItem.name}`);
     },
     onSettled: () => {
       queryClient.invalidateQueries(AUTHORS);
@@ -35,14 +41,16 @@ const RestoreAuthor = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={onClose} disableEscapeKeyDown>
-      <DialogTitle>Restore Author</DialogTitle>
-      <DialogContent>Are you sure want to restore this author &quot;{selectedItem.name}&quot;</DialogContent>
+      <DialogTitle>{authorPageStrings.restore}</DialogTitle>
+      <DialogContent>
+        {authorPageStrings.prompt.restoreAuthor} &quot;{selectedItem.name}&quot;
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>

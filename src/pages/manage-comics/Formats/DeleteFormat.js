@@ -11,13 +11,24 @@ import { deleteFormat } from 'apis/format';
 
 // toast
 import ToastService from 'services/toast.service';
+import strings from 'constants/strings';
+import getAPIErrorMessage from 'utils/getAPIErrorMessage';
+
+const {
+  buttons,
+  pages: { format: formatPageStrings }
+} = strings;
 
 const DeleteFormat = ({ open, onClose, selectedItem }) => {
   const mutation = useMutation(deleteFormat, {
     onMutate: async () => {},
     onSuccess: async () => {
       ToastService.destroyAll();
-      ToastService.success(`Deleted format ${selectedItem.name}`);
+      ToastService.success(`${formatPageStrings.mutations.deleteSuccess} ${selectedItem.name}`);
+    },
+    onError: (err) => {
+      const message = getAPIErrorMessage(err);
+      ToastService.error(message);
     },
     onSettled: () => {
       queryClient.invalidateQueries(FORMATS);
@@ -29,14 +40,16 @@ const DeleteFormat = ({ open, onClose, selectedItem }) => {
   };
   return (
     <Dialog open={open} onClose={mutation.isLoading ? undefined : onClose} disableEscapeKeyDown>
-      <DialogTitle>Delete format</DialogTitle>
-      <DialogContent>Are you sure want to delete this format &quot;{selectedItem.name}&quot;</DialogContent>
+      <DialogTitle>{formatPageStrings.delete}</DialogTitle>
+      <DialogContent>
+        {formatPageStrings.prompt.deleteFormat} &quot;{selectedItem.name}&quot;
+      </DialogContent>
       <DialogActions>
         <Button onClick={onClose} disabled={mutation.isLoading}>
-          Cancel
+          {buttons.close}
         </Button>
         <Button onClick={onSubmit} disabled={mutation.isLoading}>
-          Confirm
+          {buttons.confirm}
         </Button>
       </DialogActions>
     </Dialog>
