@@ -28,11 +28,14 @@ import useAuth from 'hooks/useAuth';
 import AuthService from 'services/auth.service';
 
 // assets
-import { IconLogout, IconSettings, IconUser } from '@tabler/icons';
+import { IconLogout, IconSettings } from '@tabler/icons';
 
 // config
 
 import { roleNames } from 'configs/roles';
+import strings from 'constants/strings';
+
+const { buttons } = strings;
 
 // ==============================|| PROFILE MENU ||============================== //
 
@@ -175,7 +178,7 @@ const ProfileSection = () => {
                         <ListItemIcon>
                           <IconLogout stroke={1.5} size="1.3rem" />
                         </ListItemIcon>
-                        <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
+                        <ListItemText primary={<Typography variant="body2">{buttons.signout}</Typography>} />
                       </ListItemButton>
                     </List>
                   </Box>

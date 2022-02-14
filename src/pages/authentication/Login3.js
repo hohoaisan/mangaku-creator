@@ -11,11 +11,13 @@ import AuthLogin from './auth-forms/AuthLogin';
 import Logo from 'ui-component/Logo';
 import AuthFooter from 'ui-component/cards/AuthFooter';
 import useAuth from 'hooks/useAuth';
+import strings from 'constants/strings';
 
 const REGISTER_URL = `${process.env.REACT_APP_CLIENT_HOST}register`;
 
-// ================================|| AUTH3 - LOGIN ||================================ //
-
+const {
+  pages: { auth: authPage }
+} = strings;
 const Login = () => {
   const theme = useTheme();
   const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
@@ -41,10 +43,10 @@ const Login = () => {
                       <Grid item>
                         <Stack alignItems="center" justifyContent="center" spacing={1}>
                           <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
-                            Hi, Welcome Back
+                            {authPage.greet1}
                           </Typography>
                           <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : 'inherit'}>
-                            Enter your credentials to continue
+                            {authPage.greet2}
                           </Typography>
                         </Stack>
                       </Grid>
@@ -59,7 +61,7 @@ const Login = () => {
                   <Grid item xs={12}>
                     <Grid item container direction="column" alignItems="center" xs={12}>
                       <Typography component={Link} href={REGISTER_URL} target="_blank" variant="subtitle1" sx={{ textDecoration: 'none' }}>
-                        Don&apos;t have an account?
+                        {authPage.noAccount}
                       </Typography>
                     </Grid>
                   </Grid>
