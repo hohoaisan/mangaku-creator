@@ -36,9 +36,7 @@ import strings from 'constants/strings';
 
 const {
   buttons,
-  forms: { labels, validations },
   pages: { user: userPageStrings },
-  common: { columns: columnStrings },
   entities: { user: userStrings }
 } = strings;
 
