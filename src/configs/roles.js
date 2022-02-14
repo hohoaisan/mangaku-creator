@@ -1,32 +1,32 @@
-const { default: strings } = require('constants/strings');
+import strings from 'constants/strings';
 
 const { roles: roleStrings } = strings;
 
-const enumRoles = {
+export const enumRoles = {
   USER: 'user',
   ADMIN: 'admin',
   AUTHOR: 'author',
   MOD: 'mod'
 };
 
-const allRoles = {
+export const allRoles = {
   [enumRoles.USER]: [],
   [enumRoles.ADMIN]: ['getUsers', 'manageUsers'],
   [enumRoles.AUTHOR]: [],
   [enumRoles.MOD]: ['getUsers', 'manageUsers']
 };
 
-const roleNames = {
+export const roleNames = {
   [enumRoles.USER]: roleStrings.USER,
   [enumRoles.ADMIN]: roleStrings.ADMIN,
   [enumRoles.AUTHOR]: roleStrings.AUTHOR,
   [enumRoles.MOD]: roleStrings.MOD
 };
 
-const roles = Object.keys(allRoles);
-const roleRights = new Map(Object.entries(allRoles));
+export const roles = Object.keys(allRoles);
+export const roleRights = new Map(Object.entries(allRoles));
 
-const selectableRoles = [
+export const selectableRoles = [
   {
     name: roleNames[enumRoles.USER],
     value: enumRoles.USER
@@ -40,11 +40,3 @@ const selectableRoles = [
     value: enumRoles.MOD
   }
 ];
-
-module.exports = {
-  roles,
-  enumRoles,
-  roleNames,
-  roleRights,
-  selectableRoles
-};

@@ -1,22 +1,22 @@
-const { default: strings } = require('./strings');
+import strings from './strings';
 
 const {
   common: { approvalStatus }
 } = strings;
 
-const statusEnum = {
+export const statusEnum = {
   PENDING: 'pending',
   APPROVED: 'approved',
   REJECTED: 'rejected'
 };
 
-const allStatus = {
+export const allStatus = {
   [statusEnum.PENDING]: approvalStatus.pending,
   [statusEnum.APPROVED]: approvalStatus.approved,
   [statusEnum.REJECTED]: approvalStatus.rejected
 };
 
-const statusOptions = [
+export const statusOptions = [
   {
     name: allStatus[statusEnum.PENDING],
     value: statusEnum.PENDING
@@ -31,8 +31,4 @@ const statusOptions = [
   }
 ];
 
-module.exports = {
-  statusEnum,
-  statusOptions,
-  status: allStatus
-};
+export const status = allStatus;
