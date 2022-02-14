@@ -41,6 +41,11 @@ const scopes = [
     hidden: ['deletedAt']
   },
   {
+    label: tabStrings.authorUser,
+    key: 'authorUser',
+    hidden: ['deletedAt']
+  },
+  {
     label: tabStrings.deleted,
     key: 'deleted',
     hidden: ['updatedAt']
