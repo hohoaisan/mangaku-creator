@@ -34,7 +34,7 @@ const chartData = {
     },
     xaxis: {
       type: 'category',
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      categories: ['06/02', '07/02', '08/02', '09/02', '10/2', '11/2', '12/2', '13/2', '14/2', '15/2', '16/2', '17/2']
     },
     legend: {
       show: true,
@@ -67,20 +67,20 @@ const chartData = {
   },
   series: [
     {
-      name: 'Investment',
+      name: 'Lượt yêu thích',
       data: [35, 125, 35, 35, 35, 80, 35, 20, 35, 45, 15, 75]
     },
     {
-      name: 'Loss',
+      name: 'Lượt đánh giá',
       data: [35, 15, 15, 35, 65, 40, 80, 25, 15, 85, 25, 75]
     },
     {
-      name: 'Profit',
-      data: [35, 145, 35, 35, 20, 105, 100, 10, 65, 45, 30, 10]
+      name: 'Lượt xem',
+      data: [235, 145, 135, 235, 220, 105, 100, 130, 165, 415, 300, 350]
     },
     {
-      name: 'Maintenance',
-      data: [0, 0, 75, 0, 0, 115, 0, 0, 0, 0, 150, 0]
+      name: 'Lượt bình luận',
+      data: [6, 8, 10, 25, 1, 14, 5, 8, 9, 10, 40, 3]
     }
   ]
 };
