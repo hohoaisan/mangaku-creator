@@ -11,7 +11,8 @@ const strings = {
       deleted: 'Đã xoá',
       pending: 'Chờ duyệt',
       approved: 'Đã duyệt',
-      rejected: 'Đã từ chối'
+      rejected: 'Đã từ chối',
+      authorUser: 'Người dùng tác giả'
     },
     columns: {
       name: 'Tên',
