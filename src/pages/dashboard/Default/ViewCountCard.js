@@ -49,7 +49,7 @@ const CardWrapper = styled(MainCard)(({ theme }) => ({
 
 // ===========================|| DASHBOARD DEFAULT - EARNING CARD ||=========================== //
 
-const EarningCard = ({ isLoading }) => {
+const ViewCountCard = ({ isLoading, value }) => {
   const theme = useTheme();
   return (
     <>
@@ -79,7 +79,7 @@ const EarningCard = ({ isLoading }) => {
               <Grid item>
                 <Grid container alignItems="center">
                   <Grid item>
-                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>465</Typography>
+                    <Typography sx={{ fontSize: '2.125rem', fontWeight: 500, mr: 1, mt: 1.75, mb: 0.75 }}>{value || 0}</Typography>
                   </Grid>
                   <Grid item>
                     <Avatar
@@ -114,8 +114,9 @@ const EarningCard = ({ isLoading }) => {
   );
 };
 
-EarningCard.propTypes = {
-  isLoading: PropTypes.bool
+ViewCountCard.propTypes = {
+  isLoading: PropTypes.bool,
+  value: PropTypes.number
 };
 
-export default EarningCard;
+export default ViewCountCard;

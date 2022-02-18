@@ -5,3 +5,4 @@ export * from './format';
 export * from './author';
 export * from './user';
 export * from './comic';
+export * from './statistic';
