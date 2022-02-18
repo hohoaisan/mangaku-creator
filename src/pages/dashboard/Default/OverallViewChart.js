@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Grid, MenuItem, TextField, Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 // third-party
 import ApexCharts from 'apexcharts';
@@ -16,27 +16,25 @@ import MainCard from 'ui-component/cards/MainCard';
 import { gridSpacing } from 'store/constant';
 
 // chart data
-import chartData from './chart-data/total-growth-bar-chart';
-
-const status = [
-  {
-    value: 'today',
-    label: 'Today'
-  },
-  {
-    value: 'month',
-    label: 'This Month'
-  },
-  {
-    value: 'year',
-    label: 'This Year'
-  }
-];
-
+import chartData from './chart-data/overallViewCharConfig';
 // ==============================|| DASHBOARD DEFAULT - TOTAL GROWTH BAR CHART ||============================== //
 
-const TotalGrowthBarChart = ({ isLoading }) => {
-  const [value, setValue] = useState('today');
+const fields = ['favoriteCount', 'reviewCount', 'viewCount', 'commentCount'];
+
+const EnumfieldName = {
+  favoriteCount: 'Luợt yêu thích',
+  reviewCount: 'Lượt đánh giá',
+  viewCount: 'Lượt xem',
+  commentCount: 'Lượt bình luận'
+};
+
+const getChartSeries = (data) =>
+  fields.map((fieldName) => ({
+    name: EnumfieldName[fieldName],
+    data: data.map((item) => item[fieldName])
+  }));
+
+const TotalGrowthBarChart = ({ isLoading, value }) => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
 
@@ -56,6 +54,8 @@ const TotalGrowthBarChart = ({ isLoading }) => {
       ...chartData.options,
       colors: [primary200, primaryDark, secondaryMain, secondaryLight],
       xaxis: {
+        type: 'category',
+        categories: (value || []).map(({ date }) => date),
         labels: {
           style: {
             colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
@@ -69,6 +69,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
           }
         }
       },
+      series: value ? getChartSeries(value) : [],
       grid: {
         borderColor: grey200
       },
@@ -86,7 +87,7 @@ const TotalGrowthBarChart = ({ isLoading }) => {
     if (!isLoading) {
       ApexCharts.exec(`bar-chart`, 'updateOptions', newChartData);
     }
-  }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500]);
+  }, [navType, primary200, primaryDark, secondaryMain, secondaryLight, primary, darkLight, grey200, isLoading, grey500, value]);
 
   return (
     <>
@@ -117,7 +118,8 @@ const TotalGrowthBarChart = ({ isLoading }) => {
 };
 
 TotalGrowthBarChart.propTypes = {
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
+  value: PropTypes.array
 };
 
 export default TotalGrowthBarChart;
