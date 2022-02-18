@@ -11,3 +11,4 @@ export const COMIC = 'COMIC';
 export const CHAPTERS = 'CHAPTERS';
 export const CHAPTER = 'CHAPTER';
 export const PROFILE_AUTHOR = 'PROFILE_AUTHOR';
+export const STATISTIC_OVERALL = 'STATISTIC_OVERALL';
